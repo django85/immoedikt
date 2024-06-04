@@ -1,0 +1,4529 @@
+<!-- templates/index.tera -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ImmoEdikt</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/2.0.1/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.5.0/css/rowGroup.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7BKjs8lqaBlDW9Y8L8484DkPcRYxWbyg&libraries=places"></script> -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+    <style>
+        .lds-roller {
+            /* change color here
+            color: #1c4c5b */
+            color: #102b33;
+        }
+        .lds-roller,
+        .lds-roller div,
+        .lds-roller div:after {
+            box-sizing: border-box;
+        }
+        .lds-roller {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .lds-roller div {
+            animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            transform-origin: 40px 40px;
+            color: #102b33;
+        }
+        .lds-roller div:after {
+            content: " ";
+            display: block;
+            position: absolute;
+            width: 7.2px;
+            height: 7.2px;
+            border-radius: 50%;
+            background: currentColor;
+            margin: -3.6px 0 0 -3.6px;
+        }
+        .lds-roller div:nth-child(1) {
+            animation-delay: -0.036s;
+        }
+        .lds-roller div:nth-child(1):after {
+            top: 62.62742px;
+            left: 62.62742px;
+        }
+        .lds-roller div:nth-child(2) {
+            animation-delay: -0.072s;
+        }
+        .lds-roller div:nth-child(2):after {
+            top: 67.71281px;
+            left: 56px;
+        }
+        .lds-roller div:nth-child(3) {
+            animation-delay: -0.108s;
+        }
+        .lds-roller div:nth-child(3):after {
+            top: 70.90963px;
+            left: 48.28221px;
+        }
+        .lds-roller div:nth-child(4) {
+            animation-delay: -0.144s;
+        }
+        .lds-roller div:nth-child(4):after {
+            top: 72px;
+            left: 40px;
+        }
+        .lds-roller div:nth-child(5) {
+            animation-delay: -0.18s;
+        }
+        .lds-roller div:nth-child(5):after {
+            top: 70.90963px;
+            left: 31.71779px;
+        }
+        .lds-roller div:nth-child(6) {
+            animation-delay: -0.216s;
+        }
+        .lds-roller div:nth-child(6):after {
+            top: 67.71281px;
+            left: 24px;
+        }
+        .lds-roller div:nth-child(7) {
+            animation-delay: -0.252s;
+        }
+        .lds-roller div:nth-child(7):after {
+            top: 62.62742px;
+            left: 17.37258px;
+        }
+        .lds-roller div:nth-child(8) {
+            animation-delay: -0.288s;
+        }
+        .lds-roller div:nth-child(8):after {
+            top: 56px;
+            left: 12.28719px;
+        }
+        @keyframes lds-roller {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+        }
+    </style>
+    <style>
+        :root {
+            --input-border-radius: 13px;
+            --html-dark-border-color: #6a6a6a;
+            --html-dark-ui-entry-bg-color: #252932;
+            --html-dark-ui-icon-btn-hover-bg-color: #363b47;
+            --html-ui-icon-btn-hover-bg-color: #dfe1e6 ;
+            --html-border-color: #c5c5c5;
+            --html-dark-border: 1px solid #6a6a6a;
+            --html-dark-border-bold: 2px solid #6a6a6a;
+            --html-dark-bg-color: #212529;
+            --html-bg-color: #f1f2f7;
+            --html-dark-font-color: #dae0e7;
+            --html-dark-border: 1px solid #595b5e;
+            --border: 1px solid #c6c6c6
+        }
+
+        * {
+            font-family: "Roboto", "Verdana";
+            /*font-weight: 400;*/
+            font-style: normal;
+        }
+        body {
+            font-size: 14px;
+            margin:0px;
+            padding:0px;
+            overflow-x:hidden;
+        }
+
+        html.dark body {
+            background-color: var(--html-dark-bg-color);
+            color: var(--html-dark-font-color);
+        }
+        html:not(.dark) body {
+            background-color: var(--html-bg-color);
+        }
+        button, input, textarea, select {
+            font-family: inherit;
+            font-size: inherit;
+            background-color: inherit;
+            color: inherit;
+        }
+        .content {
+            padding: 0px 4px 4px 4px;
+        }
+        .navbar {
+            overflow: hidden;
+            width: 100%;
+            padding:3px;
+            margin-bottom: 3px;
+        }
+        html.dark .navbar {
+            background-color: #181717;
+            color: var(--html-dark-font-color);
+            border-bottom: 1px solid #463030;
+        }
+        html:not(.dark) .navbar {
+            border: 0;
+            background-color: #c5c6cf;
+        }
+        .right {
+            float: right;
+        }
+        .left {
+            float: left;
+        }
+        .clear {
+            clear: both;
+        }
+        .separator-top,
+        .separator {
+            margin-bottom: 5px;
+            padding-top: 5px;
+        }
+        html.dark .separator-top {
+            border-top: 1px solid #ffffff12;
+        }
+        html:not(.dark) .separator-top {
+            border-top: 1px solid #00000012;
+        }
+        html.dark .separator {
+            border-bottom: 1px solid #ffffff12;
+        }
+        html:not(.dark) .separator {
+            border-bottom: 1px solid #00000012;
+        }
+
+        .ui-dialog-buttonset:has(.center) {
+            text-align: center;
+        }
+        button.ui-icon-btn {
+            /*width: 2.7em;*/
+            border:0 !important;
+        }
+        label.checkbox {
+            height: auto !important;
+            border: none !important;
+        }
+        label.checkbox input {
+            vertical-align: middle;
+            margin-bottom: 4px;
+            /*
+            accent-color: rgb(35, 66, 204);
+            border: none !important;*/
+        }
+        
+        html:not(.dark) button:not(.ui-icon-btn).ui-button:hover {
+            background-color: var(--html-ui-icon-btn-hover-bg-color) !important;
+        }
+        html:not(.dark) button.ui-icon-btn.ui-button:hover {
+            background-color: var(--html-ui-icon-btn-hover-bg-color) !important;
+        }
+        /*html:not(.dark) .ui-icon-btn:hover {
+            background: #dfe1e6 !important;
+        }*/
+
+        html.dark button:not(.ui-icon-btn).ui-button:hover {
+            /*border: 1px solid white !important;*/
+            background-color: var(--html-dark-ui-icon-btn-hover-bg-color) !important;
+        }
+        html.dark button.ui-icon-btn.ui-button:hover {
+            background-color: var(--html-dark-ui-icon-btn-hover-bg-color) !important;
+        }
+
+        html.dark button:not(.ui-icon-btn).ui-button,
+        html.dark input,
+        html.dark textarea,
+        html.dark select {
+            border: var(--html-dark-border) !important;
+        }
+        html.dark ul.ui-widget.ui-widget-content {
+            border: var(--html-dark-border) !important;
+        }
+        html:not(.dark) .ui-input {
+            background-color: white;
+            border: var(--border);
+        }
+
+        div.ui-widget.ui-widget-content {
+            border: none !important;
+        }
+        .ui-widget-content {
+            background-color: inherit !important;
+            color: inherit !important;
+        }
+        .ui-corner-all {
+            border-radius: 0px;
+        }
+        button.ui-button:not(.ui-icon-btn) {
+            background-color: inherit !important;
+            color: inherit !important;
+        }
+
+        .ui-autocomplete {
+            max-height: 15em;
+            overflow-y: scroll;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+            /*min-width: 200px;*/
+            color: inherit;
+            /*border-radius: var(--input-border-radius);*/
+            padding-left: 0px;
+            max-width: 22em;
+            font-size: 14px;
+        }
+        .ui-autocomplete .ui-menu-item {
+            /*margin: 5px !important;*/
+            /*margin-bottom: 5px !important;*/
+            padding:0px !important;
+        }
+        .ui-autocomplete .ui-menu-item-wrapper {
+            padding:0px !important;
+        }
+        .ui-autocomplete .ui-menu-item-wrapper.city-item {
+            display: flex;
+            align-items: center;
+        }
+        .ui-autocomplete .ui-menu-item-wrapper span.add-remove-city-icon {
+            font-size: 17px !important;
+            padding: 5px 13px 5px 8px !important;
+            margin:0px;
+        }
+        .ui-autocomplete .ui-menu-item-wrapper span.remove-city {
+            color:rgb(228, 151, 10) !important;
+        }
+        
+        html.dark .ui-autocomplete .ui-menu-item-wrapper span.add-city  {
+            color: rgb(197, 194, 194) !important;
+        }
+        html:not(.dark) .ui-autocomplete .ui-menu-item-wrapper span.add-city  {
+            color: rgb(31, 31, 31) !important;
+        }
+        .ui-autocomplete .ui-menu-item-wrapper span.add-city .fa-circle-plus,
+        .ui-autocomplete .ui-menu-item-wrapper span.remove-city .fa-circle-minus {
+            display: block;
+        }
+        .ui-autocomplete .ui-menu-item-wrapper span.add-city .fa-circle-minus,
+        .ui-autocomplete .ui-menu-item-wrapper span.remove-city .fa-circle-plus {
+            display: none;
+        }
+
+        html.dark ul.ui-autocomplete {
+            /*background-color: var(--html-dark-bg-color);*/
+            background-color: var(--html-dark-ui-entry-bg-color);
+        }
+        html.dark ul.ui-autocomplete li.ui-menu-item {
+            /*background-color: var(--html-dark-bg-color);*/
+            /*background-color: var(--html-dark-ui-entry-bg-color);*/
+        }
+
+        html.dark table.dataTable > tbody > tr > *,
+        html.dark table.dataTable > thead > tr > th {
+            border-top: var(--html-dark-border) !important;
+        }
+        html.dark table.dataTable > tbody > tr.child > td.child,
+        html.dark table.dataTable > tbody > tr > td.dt-empty,
+        html.dark table.dataTable > tbody > tr > td:not(:first-child),
+        html.dark table.dataTable > thead > tr > th:not(:first-child) {
+            border-right: var(--html-dark-border);
+        }
+        html.dark table.dataTable > tbody > tr > td:first-child,
+        html.dark table.dataTable > tbody > tr > td:nth-child(2),
+        html.dark table.dataTable > thead > tr > th:first-child,
+        html.dark table.dataTable > thead > tr > th:nth-child(2)  {
+            border-left: var(--html-dark-border);
+        }
+        html.dark table.dtr-details tr:not(:last-child) td {
+            border-bottom: var(--html-dark-border);
+        }
+        /*table.dtr-details tr td:last-child {
+            width:100%;
+        }*/
+        table.dtr-details {
+            /*font-size:12px;*/
+        }
+        html:not(.dark) table.dtr-details tr:not(:last-child) td {
+            border-bottom: var(--border);
+        }
+        html.dark .gm-style .gm-style-iw-c {
+            background-color: white !important;
+            color: black !important;
+        }
+        html.dark .gm-style .gm-style-iw-c button {
+            border: 0 !important;
+        }
+
+        /*table.dataTable>tbody>tr:hover>* {
+            background: transparent !important;
+        }*/
+        table.dataTable>tbody>tr.selected>*,
+        table.dataTable.hover>tbody>tr.selected:hover>*,
+        table.dataTable.display>tbody>tr.selected:hover>* {
+            box-shadow: none !important;
+        }
+
+        html.dark table.dataTable>tbody>tr.selected,
+        html.dark table.dataTable>tbody>tr.selected + tr.child:hover,
+        html.dark table.dataTable>tbody>tr.selected + tr.child {
+            background-color: #5f50cc1c !important;
+        }
+        html:not(.dark) table.dataTable>tbody>tr.selected>* {
+            color: black;
+        }
+        html:not(.dark) table.dataTable>tbody>tr.selected,
+        html:not(.dark) table.dataTable>tbody>tr.selected + tr.child:hover,
+        html:not(.dark) table.dataTable>tbody>tr.selected + tr.child  {
+            background-color: #a69ee61c !important;
+        }
+        table.dataTable > tbody > tr.selected a {
+            color: inherit !important;
+        }
+        table.dataTable tr.dtrg-group th {
+            font-weight: normal !important;
+            font-size:12px !important;
+        }
+        html.dark table.dataTable tr.dtrg-group th {
+            background-color: #1a1d20 !important;
+            border-left: var(--html-dark-border);
+            border-right: var(--html-dark-border);
+            color: gray !important;
+        }
+        html:not(.dark) table.dataTable tr.dtrg-group th {
+            background-color: #dddde7 !important;
+            color: #464646 !important;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none !important;
+        }
+        a:link, a:visited, a:active {
+            color: inherit;
+        }
+
+        table.dataTable > tbody > tr.child span.dtr-title {
+            min-width: 9em !important;
+        }
+        table.dtr-details {
+            border-spacing: 0;
+            width: auto !important;
+            margin-bottom: 5px;
+        }
+        table.dtr-details tr td {
+            vertical-align: top;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        table.dtr-details tr td:first-child {
+            /*font-weight: bold;
+            width: 9em;*/
+            padding-right:5px;
+        }
+
+        html.dark div.dt-container.dt-empty-footer tbody>tr:last-child > * {
+            border-bottom: 0 !important;
+        }
+        html:not(.dark) div.dt-container.dt-empty-footer tbody>tr:last-child > * {
+            border-bottom: 0 !important;
+        }
+
+        #auctions_wrapper {
+            max-width: 700px;
+        }
+
+        table.dataTable th.dt-left,
+        table.dataTable td.dt-left {
+            text-align: left !important;
+        }
+        table.dataTable th.dt-right,
+        table.dataTable td.dt-right {
+            text-align: right !important;
+        }
+        table.dataTable th.dt-center,
+        table.dataTable td.dt-center {
+            text-align: center !important;
+        }
+        th.fixed-width-ctrl-col {
+            width: 2.6em !important;
+        }
+        th.min-width-edict_tile-col {
+            min-width: 9em !important;
+        }
+        html.dark .ui-dialog-titlebar {
+            border: 0 !important;
+            background-color: #181b1f!important;
+            color: rgb(197, 194, 194)!important;
+        }
+        html:not(.dark) .ui-dialog-titlebar {
+            border: 0 !important;
+            background-color: #e4e8eb !important;
+            color: rgb(31, 31, 31)!important;
+        }
+        div.ui-dialog.no-close .ui-dialog-titlebar-close {
+            display: none
+        }
+        div.ui-dialog.no-title .ui-dialog-titlebar {
+            display: none
+        }
+
+        div.ui-dialog.round-border {
+            border-radius: var(--input-border-radius) !important;
+        }
+        .ui-dialog-buttonpane {
+            padding-right: .4em !important;
+        }
+        html.dark .ui-dialog-buttonpane {
+            border-top-color: var(--html-dark-border-color) !important;
+        }
+        div.ui-dialog.round-border .ui-dialog-titlebar {
+            border-top-left-radius: var(--input-border-radius) !important;
+            border-top-right-radius: var(--input-border-radius) !important;
+            border-bottom-left-radius: 2px;
+            border-bottom-right-radius: 2px;
+        }
+        div.ui-dialog.round-border .ui-dialog-buttonpane {
+            border-bottom-left-radius: var(--input-border-radius) !important;
+            border-bottom-right-radius: var(--input-border-radius) !important;
+        }
+        div.ui-dialog-buttonset {
+            width:100% !important;
+        }
+
+        div.ui-dialog-buttonset button.ui-last-btn {
+            margin-right:0 !important;
+        }
+        .ui-input {
+            border-radius: var(--input-border-radius) !important;
+            box-sizing: border-box;
+            padding: 4px;
+        }
+        .ui-button {
+            padding: 4px 10px !important;
+            border-radius: var(--input-border-radius);
+        }
+
+
+        div.dt-container .dt-input,
+        div.dt-container .dt-search input {
+            border-radius: var(--input-border-radius) !important;
+        }
+        .clickable:hover {
+            cursor:pointer;
+        }
+        .aligned {
+            display: flex;
+            align-items: center;
+
+        }
+        .aligned input,
+        .aligned button,
+        .aligned select {
+            margin-right:3px;
+        }
+        div.user-input {
+            /*overflow:hidden;*/
+        }
+        div.user-input div {
+            margin-bottom: 3px;
+        }
+        div.user-input span.title {
+            min-width: 6.5em;
+        }
+        div.user-input span.title-2 {
+            min-width: 8em;
+        }
+        /*
+        select[multiple] option:checked {
+            background-color: #3399FF !important;
+            color: white !important;
+        }*/
+
+        html.dark option:not(:checked) {
+            background-color: var( --html-dark-bg-color);
+            color: var(--html-dark-font-color);
+        }
+
+        html.dark table.dataTable>thead>tr>th,
+        html.dark table.dataTable>thead>tr>th {
+            border-bottom: 0 !important;
+        }
+        html.dark .dt-input,
+        html.dark .dt-input option:not(:checked),
+        html.dark div.ui-dialog-buttonset .ui-entry,
+        html.dark div.user-input .ui-entry,
+        html.dark div.user-input .ui-entry-2,
+        html.dark div.user-input .ui-entry-2 option:not(:checked),
+        html.dark div.user-input .ui-entry option:not(:checked) {
+            background-color: var(--html-dark-ui-entry-bg-color) !important;
+            color:inherit !important;
+        }
+        .dt-paging-button {
+            border-radius: var(--input-border-radius) !important;
+        }
+        html:not(.dark) .dt-input,
+        html:not(.dark) .dt-input option:not(:checked) {
+            background-color: white !important;
+            color:inherit !important;
+        }
+        html:not(.dark) .ui-icon-btn {
+            background: transparent  !important;
+        }
+        div.user-input .ui-entry-2 {
+            padding-left: 8px;
+        }
+        div.user-input .ui-entry {
+            height: 2.1em;
+            padding-left: 10px;
+        }
+        .ui-input-prefix {
+            width: 2.6em;
+            margin-right: 0px !important;
+        }
+        .ui-input-prefix-target {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            width: 35px;
+            font-size: 20px;
+        }
+        .no-border-right-radius {
+            border-top-right-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
+        .no-border-left-radius {
+            border-top-left-radius: 0px !important;
+            border-bottom-left-radius: 0px !important;
+        }
+        .width-100 {
+            width: 100%;
+        }
+        div.img_dialog_container {
+            /* height: 618px; */
+            overflow-y: scroll;
+            overflow-x: hidden;
+            text-align: center;
+            /*border: 1px solid #e1e1e1;*/
+            padding-top:3px;
+        }
+
+        #dialog-images {
+            overflow-y: hidden;
+            padding: 4px !important;
+        }
+        #dialog-map {
+            padding: 2px 0px 0px 0px !important;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        ul {
+            margin: 0px;
+            padding: 0px
+        }
+        li.action_icon {
+            list-style: none;
+        }
+        li.action_icon:before {
+            content: "\2699 ";
+            font-size: 1.29em;
+            line-height: 0px;
+            margin-left: 2px;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        li.file_icon {
+            list-style: none;
+        }
+
+        li.file_icon:before {
+            content: "\1F4C1  ";
+            font-size: 1.2em;
+            vertical-align: middle;
+            line-height: 0px;
+        }
+        .bold-font {
+            font-weight: bold;
+        }
+        td.break-word {
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+        .nowrap {
+            white-space: nowrap;
+        }
+        span.edit_profile_icon {
+            vertical-align: middle;
+            line-height: 0px;
+        }
+        span.edit_profile_icon:before {
+            content: "\270E";
+            font-size: 1.4em;
+        }
+        .fa-btn-icon {
+            font-size: 1.1em;
+        }
+        span.save_icon {
+            vertical-align: middle;
+            line-height: 0px;
+        }
+        span.save_icon:before {
+            content: "\1F4BE";
+            font-size: 1em;
+        }
+        span.clear_row_icon {
+            line-height: 0px;
+            vertical-align: middle;
+        }
+        span.clear_row_icon:before {
+            content: "\2716";
+            font-size: 1.3em;
+            font-weight: normal !important;
+            color:rgb(160, 11, 11);
+        }
+        span.save_row_icon {
+            line-height: 0px;
+            vertical-align: middle;
+
+        }
+        span.save_row_icon:before {
+            content: "\1F4BE";
+            font-size: 1.0em;
+        }
+
+        span.menu_icon {
+            line-height: 0px;
+            vertical-align: middle;
+        }
+        span.menu_icon:before {
+            content: "\2630";
+            font-size: 1.4em;
+        }
+        span.setting_icon {
+            line-height: 0px;
+            vertical-align: middle;
+        }
+        span.setting_icon:before {
+            content: "\2699";
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .fa-search-icon {
+            font-size: 16px;
+        }
+        html.dark .fa-search-icon {
+            color: #a76f6f;
+        }
+        html:not(.dark) .fa-search-icon {
+            color: #795050;
+        }
+        /*
+        html.dark span.search_icon {
+            color: #a76f6f;
+            font-weight: bold;
+        }
+        html:not(.dark) span.search_icon {
+            color: #795050;
+            font-weight: bold;
+        }
+        span.search_icon {
+            line-height: 0px;
+            vertical-align: middle;
+        }
+        span.search_icon:before {
+            content: "\2315";
+            font-size: 2em;
+        }*/
+        /*
+        span.add_icon {
+            line-height: 0px;
+            vertical-align: middle;
+        }
+        span.add_icon:before {
+            content: "\002B";
+            font-size: 1.8em;
+        }
+
+        span.moon_icon {
+            line-height: 0px;
+            vertical-align: middle;
+        }
+        span.moon_icon:before {
+            content: "\263E";
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        span.sun_icon {
+            line-height: 0px;
+            vertical-align: middle;
+        }
+        span.sun_icon:before {
+            content: "\2609";
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        span.info_icon {
+            line-height: 0px;
+            vertical-align: middle;
+            padding-bottom: 0.15em;
+        }
+        span.info_icon:before {
+            content: "\1F4C4";
+            font-size: 1.4em;
+        }
+        */
+
+        th.dtr-control.expand_all_icon:before {
+            display: inline-block;
+            box-sizing: border-box;
+            content: "";
+            border-top: 5px solid transparent;
+            border-left-color: rgba(255, 255, 255, 0.5);
+            border-bottom: 5px solid transparent;
+            border-right: 0px solid transparent;
+        }
+        html.dark th.dtr-control.expand_all_icon:before {
+            border-left: 10px solid rgba(255, 255, 255, 0.5);
+        }
+        html:not(.dark) th.dtr-control.expand_all_icon:before {
+            border-left: 10px solid rgb(110, 111, 115);
+        }
+        th.dtr-control.collapse_all_icon:before {
+            display: inline-block;
+            box-sizing: border-box;
+            content: "";
+            border-top-color: rgba(255, 255, 255, 0.5);
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-left: 5px solid transparent;
+            border-bottom: 0px solid transparent;
+            border-right: 5px solid transparent;
+        }
+        html.dark th.dtr-control.collapse_all_icon:before {
+            border-top: 10px solid rgba(255, 255, 255, 0.5);
+        }
+        html:not(.dark) th.dtr-control.collapse_all_icon:before {
+            border-top: 10px solid rgb(110, 111, 115);
+        }
+        .dt-container .dt-layout-row:first-child .dt-layout-cell.dt-start {
+            float:left;
+        }
+        .dt-container .dt-layout-row:first-child .dt-layout-cell.dt-end {
+            float:right;
+        }
+        .dt-search {
+            margin-top: 0 !important;
+        }
+        /*
+        #extended-query-options {
+            padding-top: 2px;
+            padding-bottom: 2px;
+            border-radius: calc(var(--input-border-radius) - 5px);
+        }
+
+        html.dark #extended-query-options {
+            border-top: 1px dotted rgb(67, 67, 73);
+            border-bottom: 1px dotted rgb(67, 67, 73);
+        }
+        html:not(.dark) #extended-query-options {
+            border-top: 1px dotted rgb(194 194 219);
+            border-bottom: 1px dotted rgb(194 194 219);
+        }
+        #dialog-regions span {
+            min-width: 8.5em;
+        }
+        */
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #a2aacf !important;
+            opacity: 0.3;
+            z-index: 100;
+        }
+        .loading-process-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 101;
+        }
+        .ui-widget-overlay {
+            background: #a2aacf !important;
+            opacity: 0.3;
+        }
+
+        /*
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        .img_dialog_container::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+            border-radius: 10px;
+        }
+        .img_dialog_container::-webkit-scrollbar-track,
+        body::-webkit-scrollbar-track {
+           background: transparent;
+
+        }
+        #categories::-webkit-scrollbar,
+        #edict_types::-webkit-scrollbar,
+        ul::-webkit-scrollbar {
+            width: 12px;
+        }
+        #categories::-webkit-scrollbar-thumb,
+        #edict_types::-webkit-scrollbar-thumb,
+        ul::-webkit-scrollbar-thumb{
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }*/
+
+        div.rspv_content {
+            width: 100%;
+            overflow:hidden;
+            z-index:1001;
+        }
+        div.rspv_content .header,
+        div.rspv_content .center {
+            margin-bottom:5px;
+            overflow:hidden;
+        }
+        div.rspv_content .center div {
+            overflow:hidden;
+        }
+
+        div.rspv_content .header .title {
+            padding-bottom:5px;
+            margin-bottom:5px;
+        }
+        html.dark .rspv_content .header .title {
+            border-bottom: var(--html-dark-border);
+        }
+        html:not(.dark) .rspv_content .header .title {
+            border-bottom: var(--border);
+        }
+        .rspv_content p {
+            margin-top:0px;
+            margin-bottom:3px;
+        }
+        .rspv_content .center .img-container {
+            display: flex;
+            align-items: center;
+            /*height: 11em;
+            width: 10em;*/
+            height: 11em;
+            width: 9em;
+            overflow: hidden;
+            padding: 3px;
+            border-radius: var(--input-border-radius);
+        }
+        html.dark .rspv_content .center .img-container {
+            border: var(--html-dark-border);
+        }
+        html:not(.dark) .rspv_content .center .img-container {
+            border: var(--border);
+        }
+        .rspv_content .img-container a,
+        .rspv_content .img-container a img {
+            border-radius: var(--input-border-radius);
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .rspv_content .detail_container {
+            /*width: 60%;*/
+            padding: 0px 0px 0px 10px;
+        }
+
+        .bookmark-loaded-section {
+            padding: 5px;
+            font-size: 12px;
+            color: #7e7e7e;
+            font-style: italic;
+            margin-top: 2px;
+        }
+        .BL {
+            margin-top:5px;
+        }
+        .fa-icon-next-to-text {
+            margin-right:3px;
+        }
+        #popup-regions {
+            text-align: left;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            padding-left: 10px !important;
+            color:#777 !important;
+        }
+        html:not(.dark) #popup-regions {
+            background-color: white !important;
+        }
+        /*************
+         Menu style
+         *************/
+        #menu {
+            position: fixed;
+            top: 37px;
+            left: -1px;
+            padding: 5px;
+            width: fit-content;
+            border-bottom-right-radius: var(--input-border-radius);
+            font-size: 15px;
+            background-color: white !important;
+        }
+        #menu .ui-menu-item {
+            margin: 10px !important;
+        }
+
+        html.dark .ui-widget-content.ui-menu-divider {
+            border: 1px solid rgb(95, 94, 94) !important;
+            border-width: 1px 0 0 0 !important;
+        }
+        html.dark #menu {
+            background-color: #232324 !important;
+            color:white;
+        }
+        html:not(.dark).dark #menu {
+            background-color: #cccaca !important;
+            color:black;
+        }
+        .ui-widget-content .ui-state-active {
+            background: transparent !important;
+        }
+        html.dark .ui-widget-content .ui-state-active {
+            background-color: var(--html-dark-ui-icon-btn-hover-bg-color) !important;
+            border: 1px solid var(--html-dark-ui-icon-btn-hover-bg-color)  !important;
+            color:white;
+        }
+        html:not(.dark) .ui-widget-content .ui-state-active {
+            background-color: #ededed !important;
+            border: 1px solid #ededed !important;
+            color:black;
+        }
+        .ui-menu-icons .ui-menu-item-wrapper {
+            padding-left: 5px !important;
+        }
+ 
+        span.fa-ui-icon-2 {
+            display: inline-block;
+            margin-right: 5px;
+            font-size: 10px;
+        }
+        span.fa-ui-icon {
+            display: inline-block;
+            width: 2em;
+        }
+        /*
+        .dt-info {
+            font-size: 12px !important;
+        }*/
+        .modal-content {
+            max-height: calc(100% - 1.8em); /* Adjust based on your footer height */
+            overflow-y: auto;
+        }
+        .modal-footer {
+            position: absolute;
+            bottom: 0;
+            width: -webkit-fill-available;
+        }
+
+         /***************************
+         * Custom Leaflet map style
+         ***************************/
+         .leaflet-control-attribution:hover {
+            white-space: normal;
+         }
+        .leaflet-control-attribution {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            transition: 0s white-space;
+            transition-delay: 1s;
+            max-width: 25em;
+        }
+        .leaflet-container .rspv_content {
+            font-size: 14px !important;
+        }
+        .leaflet-control-layers.leaflet-control {
+            margin-top: 20px !important;
+        }
+        div.leaflet-control.details {
+            padding: 8px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+            top: 17px;
+            z-index: 1001;
+            /*border-radius: var(--input-border-radius);*/
+        }
+        div.leaflet-control.notice {
+            line-height: 1.4;
+            margin-top:0px;
+            margin-left:0px;
+            padding: 0 5px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+
+        html.dark div.leaflet-control.details {
+            background: var(--html-dark-bg-color);
+        }
+        html:not(.dark) div.leaflet-control.details {
+            background: var(--html-bg-color);
+        }
+
+        html.dark .leaflet-touch .leaflet-bar a {
+            background-color: var(--html-dark-bg-color);
+        }
+        .leaflet-touch .leaflet-bar {
+            border: 0 !important;
+        }
+        .leaflet-popup-content p {
+            margin: 0.7em 0 !important;
+        }
+        .marker-cluster div {
+            font-weight: bold !important;
+            color: black !important;
+        }
+        .marker-icon.auction_bid {
+            /* Set the marker color here */
+            background: rgb(85, 85, 85);
+            /* optional fanciness */
+            border: 1px solid rgb(46, 46, 46);
+        }
+        .marker-icon.auction {
+            /* Set the marker color here */
+            background: Tomato;
+            /* optional fanciness */
+            border: 1px solid #991400;
+        }
+        .marker-icon.other {
+            /* Set the marker color here */
+            background: #1170ec;
+            /* optional fanciness */
+            border: 1px solid #0f63d1;
+        }
+        .marker-icon.marker-selected {
+            background-color: var(--html-dark-bg-color) !important;
+            border: 2px solid white !important;
+        }
+        .marker-icon.marker-selected .fa-icon,
+        .marker-icon.marker-selected .fa-icon-smaller {
+            color: orange !important;
+        }
+        .marker-icon.marker-selected.no-inner-icon::before {
+            background: orange !important;
+        }
+
+        .fa-tree-2 {
+            padding-right: 0px;
+            font-size: 11px;
+        }
+        .fa-tree-2::before {
+            content: "\f1bb\f1bb"
+        }
+        .fa-house-2 {
+            font-size: 11px;
+        }
+        .fa-house-2::before {
+            content: "\f015\f015";
+        }
+        .fa-shop-house {
+            padding-right: 1px;
+            font-size: 10px;
+        }
+        .fa-shop-house::before  {
+            content: "\f54f\f015"
+        }
+        .fa-icon {
+            transform: rotate(-45deg);
+            margin-top: 7px;
+            color: white;
+            font-size:13px;
+        }
+        .fa-icon-smaller {
+            transform: rotate(-45deg);
+            margin-top: 8px;
+            color: white;
+        }
+        .fa-percent-2 {
+            transform: rotate(-45deg);
+            color: white;
+            font-size: 8px;
+        }
+        .marker-icon {
+            /* Set the marker size here */
+            width: 1.7rem;
+            height: 1.7rem;
+            border-radius: 2rem;
+            display: inline-block;
+            border-bottom-right-radius: 0;
+            position: relative;
+            transform: rotate(45deg);
+            text-align: center;
+        }
+        /* inner circle (optional if you don't need the central dot) */
+        .marker-icon.no-inner-icon::before {
+            content: "";
+            background: white;
+            width: 50%;
+            height: 50%;
+            border-radius: 100%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+
+            /* optional fanciness */
+            box-shadow: 0.1rem 0.1rem 0.2rem 0.1rem rgba(0, 0, 0, 0.1);
+        }
+        /* shadow (optional if you don't need a shadow) */
+        /*
+        .marker-icon::after {
+            content: "";
+            background: rgba(128, 128, 128, 0.2);
+            width: 75%;
+            height: 75%;
+            border-radius: 100%;
+            position: absolute;
+            top: 100%;
+            left: 100%;
+            transform: translate(-50%, -50%) rotate(45deg) scaleX(0.5);
+        }*/
+
+    </style>
+
+</head>
+<body style="display:none">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/select/2.0.1/js/dataTables.select.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.13.6/sorting/currency.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/rowgroup/1.5.0/js/dataTables.rowGroup.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+<script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+<script src="https://kit.fontawesome.com/f196d91513.js" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    const BASE_URL = ''; //'http://localhost:8000';
+    const INPUT_RADIUS_MESSAGE = 'Reichweite (z.B 5km) um die umliegenden Orte zu erfassen.';
+    const INPUT_ZIP_MESSAGE = 'Geben sie (mehrere) gültige PLZ ein.';
+    const COLUMN_FILTER_DISABLED = 0;
+    const COLUMN_FILTER_ENABLED = 1;
+    const MOBILE_SCREEN = window.screen.width > 1280 ? false : true;
+    const IS_ANDROID = typeof AndroidBridge !== "undefined" ? true : MOBILE_SCREEN;
+    if (typeof AndroidBridge !== "undefined" ) $('.android-function').show();
+
+    let Android = function() {
+        return {
+            geo_location: function(lat, lng) {
+                GeoLocation.current_location({
+                    lat: lat,
+                    lng: lng
+                });
+            },
+            close_last_opened_popup: function() {
+                let activePopups = Popups.active_popups();
+                if (activePopups.length > 0) $('#' + activePopups[activePopups.length - 1]).dialog("close");
+            }
+        }
+    }();
+
+    let Popups = function() {
+        let activePopups = [];
+        return {
+            popup_opened: function(id) {
+                activePopups.push(id);
+            },
+            popup_closed: function(id) {
+                activePopups = activePopups.filter(item => item !== id);
+            },
+            active_popups: function() {
+                return activePopups;
+            }
+        }
+    }();
+    let GeoLocation = function () {
+        let currentLocation = {};
+        function openDatabase() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open('geoLocation', 1);
+
+                request.onsuccess = (e) => {
+                    resolve(e.target.result);
+                };
+
+                request.onerror = (e) => {
+                    reject(e.target.error);
+                };
+
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains('coordinates')) {
+                        let geoLocationStore = db.createObjectStore('coordinates', { keyPath: 'key' });
+                        geoLocationStore.createIndex('idIndex', 'key', { unique: true });
+                    }
+                };
+            });
+        }
+
+        function getTransaction(db, storeName, mode) {
+            return db.transaction(storeName, mode).objectStore(storeName);
+        }
+        function addItem(store, key, item) {
+            return new Promise((resolve, reject) => {
+                const index = store.index('idIndex');
+                const request = index.get(key);
+                item.key = key;
+                request.onsuccess = (e) => {
+                    var result = e.target.result;
+                    var request;
+                    if (result) request = store.put(item);
+                    else request = store.add(item);
+                    request.onsuccess = function(e) {
+                        resolve(e.target.result);
+                    };
+                    request.onerror = (e) => {
+                        reject(e.target.error);
+                    };
+                };
+                request.onerror = (e) => {
+                    reject(e.target.error);
+                };
+            });
+        }
+        function getItem(store, key) {
+            return new Promise((resolve, reject) => {
+                const index = store.index('idIndex');
+                const request = index.get(key);
+
+                request.onsuccess = (e) => {
+                    var result = e.target.result;
+                    if (result) resolve(result)
+                    else resolve({})
+                };
+                request.onerror = (e) => {
+                    reject(e.target.error);
+                };
+            });
+        }
+
+        return {
+            current_location: function(location) {
+                if (typeof location !== "undefined" && Object.keys(location).length > 0) {
+                    currentLocation = location
+                }
+                return currentLocation;
+            },
+            cities: function() {
+                async function getCoordinates(zip_code, city_name) {
+                    try {
+                        const response = await fetch(`${BASE_URL}/edict/geo_locations?zip_codes=${zip_code}&city=${city_name}`);
+                        const json = await response.json();
+                        if (json.data.length > 0) {
+                            return { lat: parseFloat(json.data[0].lat), lon: parseFloat(json.data[0].lng) };
+                        } else {
+                            return {};
+                        }
+                    } catch (error) {
+                        return {}
+                    }
+                }
+                return {
+                    get_coordinates_with_cb: async function(city, cb) {
+                        const[, zip_code, city_name] = city.match(/^(\d{4})\s+(.+)$/);
+                        //const [zip_code, city_name] = city.split(/\s+/);
+                        let location = await getCoordinates(zip_code, city_name);
+                        cb(location)
+                    }
+                }
+            },
+            storage: function() {
+                return {
+                    get_coordinates: async function(adr, cb) {
+                        const db = await openDatabase();
+                        const store = getTransaction(db, 'coordinates', 'readwrite');
+                        cb(await getItem(store, adr));
+                    },
+                    add_coordinates: async function(adr, coordinates) {
+                        const db = await openDatabase();
+                        const store = getTransaction(db, 'coordinates', 'readwrite');
+                        return addItem(store, adr, coordinates);
+                    },
+                    remove_coordinates: async function() {
+                        const db = await openDatabase();
+                        const store = getTransaction(db, 'coordinates', 'readwrite');
+                        store.clear();
+                    },
+                    get_all: async function(cb) {
+                        const db = await openDatabase();
+                        const store = getTransaction(db, 'coordinates', 'readwrite');
+                        store.getAll().onsuccess = function(e) {
+                            let result = e.target.result;
+                            cb(result);
+                        }
+                    }
+                }
+            },
+            get_coordinates: async function(adr, cb) {
+                let location = await GeoLocation.api_OGDAddressService().get_coordinates(adr);
+                if (Object.keys(location).length == 0) location = await GeoLocation.api_DORIS().get_coordinates(adr);
+                if (Object.keys(location).length == 0) location = await GeoLocation.api_nominatim().get_coordinates(adr);
+                cb(location);
+            },
+            api_nominatim: function() {
+                async function getCoordinates(adr) {
+                    try {
+                        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(adr)}`);
+                        const json = await response.json();
+                        if (json.length > 0) {
+                            const { lat, lon } = json[0];
+                            return { lat: parseFloat(lat), lon: parseFloat(lon) };
+                        } else {
+                            return {};
+                        }
+                    } catch (error) {
+                        return {}
+                    }
+
+                }
+                return {
+                    get_coordinates: function(adr) {
+                        return getCoordinates(adr);
+                    },
+                    get_coordinates_with_cb: async function(adr, cb) {
+                        let location = await getCoordinates(adr);
+                        cb(location)
+                    }
+                }
+
+            },
+            api_DORIS: function() {
+                async function getCoordinates(adr) {
+                    try {
+                        const response = await fetch(`https://srv.doris.at/solr/searchservice/search/adressen2/?q=${encodeURIComponent(adr)}`);
+                        const text = await response.text();
+                        if (text !== "") {
+                            const data = JSON.parse(text);
+                            if (data.response.numFound > 0) {
+                                const point = data.response.docs[0].geo[0];
+                                const [, point_x, point_y] = point.match(/^POINT\((\d+\.\d+)\s+(\d+\.\d+)\)$/);
+                                const p = L.CRS.EPSG3857;
+                                let lat_long = p.unproject(new L.Point(point_x, point_y));
+                                return {
+                                    lon: lat_long.lng,
+                                    lat: lat_long.lat
+                                };
+                            }
+                            else return {}
+                        } else {
+                            return {}
+                        }
+                    } catch (error) {
+                        return {}
+                    }
+                }
+                return {
+                    get_coordinates: function(adr) {
+                        let [plz_and_ort, _adr] = adr.split(",");
+                        _adr = typeof _adr !== "undefined" ? _adr.trim() + ' ' + plz_and_ort : plz_and_ort;
+                        return getCoordinates(_adr);
+                    }
+                }
+            },
+            api_OGDAddressService: function() {
+                async function getCoordinates(adr) {
+                    try {
+                        const response = await fetch(`https://data.wien.gv.at/daten/OGDAddressService.svc/GetAddressInfo?crs=EPSG:4326&Address=${encodeURIComponent(adr)}`);
+                        const text = await response.text();
+                        if (text !== "") {
+                            const data = JSON.parse(text);
+                            const lon = data.features[0].geometry.coordinates[0];
+                            const lat = data.features[0].geometry.coordinates[1];
+                            return { lat: parseFloat(lat), lon: parseFloat(lon) };
+                        } else {
+                            return {}
+                        }
+                    } catch (error) {
+                        return {}
+                    }
+                }
+                return {
+                    get_coordinates: function(adr) {
+                        const regex = new RegExp(/^\d{4}\s+Wien[\s+,].+?/);
+                        if (regex.test(adr)) {
+                            let [_, _adr] = adr.split("Wien");
+                            _adr = _adr.replace(",", "").trim();
+                            return getCoordinates(_adr);
+                        }
+                        return {};
+                    }
+                }
+            }
+        }
+    }();
+    let Cache = function() {
+        const DB_NAME = 'immoEdikt';
+        const DB_VERSION = 1;
+        const QUERY_CACHE_EXPIRY = 2 * 60 * 60 * 1000; // 2 hours
+        const QUERY_RESET = {
+            last_query_info: {
+                key: null,
+                radius: null,
+                zip_codes: null,
+                cities: {},
+                categories: [],
+                edict_types: [],
+                federal_states: [],
+                districts: [],
+                size_of_object_from: null,
+                size_of_object_to: null,
+                valuation: null,
+                url: null,
+                expiry: 0,
+            },
+            query: {}
+        };
+        const SETTINGS_RESET = {
+            darkmode: {
+                data: false,
+                key: 'darkmode'
+            }
+        };
+        let cachedEdictDataQuery = QUERY_RESET;
+        let cachedSettings = SETTINGS_RESET;
+        let cachedEdictData = {};
+        let cachedEdictSearchProfile = {};
+        function init(last_query_info_cb, settings_cb) {
+            // Open or create a database
+            let edictDb = indexedDB.open(DB_NAME, DB_VERSION);
+            edictDb.onupgradeneeded = function(e) {
+                let db = e.target.result;
+
+                // Create object stores
+                let edictDataStore = db.createObjectStore('edict_data', { keyPath: 'key' });
+                let edictSearchStore = db.createObjectStore('edict_search_profile', { keyPath: 'key' });
+                let edictDataQueryStore = db.createObjectStore('edict_data_query', { keyPath: 'key' });
+                let settingsStore = db.createObjectStore('settings', { keyPath: 'key' });
+
+                // Create indexes
+                edictDataStore.createIndex('idIndex', 'key', { unique: true });
+                edictSearchStore.createIndex('idIndex', 'key', { unique: true });
+                edictDataQueryStore.createIndex('idIndex', 'key', { unique: true });
+                settingsStore.createIndex('idIndex', 'key', { unique: true });
+
+            };
+            edictDb.onsuccess = function(e) {
+                let db = e.target.result;
+
+                let transaction = db.transaction(['edict_data', 'edict_search_profile', 'edict_data_query', 'settings'], 'readwrite');
+
+                let edictDataStore = transaction.objectStore('edict_data');
+                let edictSearchStore = transaction.objectStore('edict_search_profile');
+                let edictDataQueryStore = transaction.objectStore('edict_data_query');
+                let settingsStore = transaction.objectStore('settings');
+
+                let getEdictData = edictDataStore.getAll();
+                let getEdictSearch = edictSearchStore.getAll();
+                let getEdictDataQuery = edictDataQueryStore.getAll();
+                let getSettings = settingsStore.getAll();
+
+                getSettings.onsuccess = function(e) {
+                    let result = e.target.result;
+                    if (result)
+                        result.forEach(data => {
+                            cachedSettings[data.key] = data;
+                        });
+                    settings_cb(cachedSettings);
+                }
+                getEdictData.onsuccess = function(e) {
+                    let result = e.target.result;
+                    if (result)
+                        result.forEach(data => {
+                            cachedEdictData[data.key] = data;
+                        });
+
+                };
+                getEdictSearch.onsuccess = function(e) {
+                    let result = e.target.result;
+                    if (result)
+                        result.forEach(data => {
+                            cachedEdictSearchProfile[data.key] = data;
+                        });
+
+                };
+                getEdictDataQuery.onsuccess = function(e) {
+                    let result = e.target.result;
+                    if (result)
+                        result.forEach(data => {
+                            if (data.key === 'last_query_info') {
+                                if (new Date().getTime() > data.expiry) {
+                                    edictDataQueryStore.clear();
+                                    return;
+                                }
+                                cachedEdictDataQuery.last_query_info = data;
+                                last_query_info_cb(data);
+                            }
+                            else {
+                                cachedEdictDataQuery.query[data.key] = data;
+                            }
+                        });
+                };
+            };
+        }
+        function deleteEntryFromDb(key, object_name) {
+            let edictDb = indexedDB.open(DB_NAME, DB_VERSION);
+            edictDb.onsuccess = function(e) {
+                let db = e.target.result;
+                let transaction = db.transaction(object_name, 'readwrite');
+                let objectStore = transaction.objectStore(object_name);
+
+                if (typeof key !== "undefined") objectStore.delete(key);
+                else objectStore.clear();
+            }
+        }
+
+        function syncDataToDb(key, data, object_name) {
+            let edictDb = indexedDB.open(DB_NAME, DB_VERSION);
+            edictDb.onsuccess = function(e) {
+                let db = e.target.result;
+                let transaction = db.transaction(object_name, 'readwrite');
+                let objectStore = transaction.objectStore(object_name);
+
+                let index = objectStore.index('idIndex');
+                let getSearchProfileReq = index.get(key);
+
+                getSearchProfileReq.onsuccess = function(e) {
+                    if (e.target.result) objectStore.put(data);
+                    else objectStore.add(data);
+                };
+            };
+        }
+
+        return {
+            edict_search: function(key, data) {
+                if (typeof key !== "undefined" && typeof data !== "undefined") {
+                    if (!cachedEdictSearchProfile.hasOwnProperty(key)) cachedEdictSearchProfile[key] = {};
+                    cachedEdictSearchProfile[key].key = key;
+                    cachedEdictSearchProfile[key].radius = data.radius;
+                    cachedEdictSearchProfile[key].zip_codes = data.zip_codes;
+                    cachedEdictSearchProfile[key].cities = data.cities;
+                    cachedEdictSearchProfile[key].valuation = data.valuation;
+                    cachedEdictSearchProfile[key].categories = data.categories;
+                    cachedEdictSearchProfile[key].edict_types = data.edict_types;
+                    cachedEdictSearchProfile[key].federal_states = data.federal_states;
+                    cachedEdictSearchProfile[key].districts = data.districts;
+                    cachedEdictSearchProfile[key].size_of_object_from = data.size_of_object_from;
+                    cachedEdictSearchProfile[key].size_of_object_to = data.size_of_object_to;
+                    cachedEdictSearchProfile[key].search_agent = data.hasOwnProperty('search_agent') ? data.search_agent : false;
+                    syncDataToDb(key, cachedEdictSearchProfile[key], 'edict_search_profile');
+                }
+                else if (typeof key !== "undefined") return cachedEdictSearchProfile[key]
+                return cachedEdictSearchProfile;
+            },
+            remove_edict_search: function(key) {
+                if (typeof key !== "undefined") delete cachedEdictSearchProfile[key]
+                else cachedEdictSearchProfile = {}
+                deleteEntryFromDb(key, 'edict_search_profile');
+            },
+            edict_data_query: function(key, data, param) {
+                if (typeof key !== "undefined" && typeof data !== "undefined") {
+                    const expiry = new Date().getTime() + QUERY_CACHE_EXPIRY;
+                    cachedEdictDataQuery.query[key] = {
+                        key: key,
+                        value: data,
+                        expiry: expiry
+                    };
+                    cachedEdictDataQuery.last_query_info.key = 'last_query_info';
+                    cachedEdictDataQuery.last_query_info.expiry = expiry;
+                    cachedEdictDataQuery.last_query_info.radius = param.radius;
+                    cachedEdictDataQuery.last_query_info.zip_codes = param.zip_codes;
+                    cachedEdictDataQuery.last_query_info.cities = param.cities;
+                    cachedEdictDataQuery.last_query_info.valuation = param.valuation;
+                    cachedEdictDataQuery.last_query_info.categories = param.categories;
+                    cachedEdictDataQuery.last_query_info.edict_types = param.edict_types;
+                    cachedEdictDataQuery.last_query_info.federal_states = param.federal_states;
+                    cachedEdictDataQuery.last_query_info.districts = param.districts;
+                    cachedEdictDataQuery.last_query_info.size_of_object_from = param.size_of_object_from;
+                    cachedEdictDataQuery.last_query_info.size_of_object_to = param.size_of_object_to;
+
+                    syncDataToDb('last_query_info', cachedEdictDataQuery['last_query_info'], 'edict_data_query');
+                    syncDataToDb(key, cachedEdictDataQuery.query[key], 'edict_data_query');
+                }
+                else if (typeof key !== "undefined") return cachedEdictDataQuery.query[key]
+                return cachedEdictDataQuery;
+            },
+            remove_edict_data_query: function(key) {
+                if (typeof key !== "undefined") delete cachedEdictDataQuery.query[key]
+                else cachedEdictDataQuery = QUERY_RESET
+                deleteEntryFromDb(key, 'edict_data_query');
+            },
+            settings: function(key, data) {
+                if (typeof key !== "undefined" && typeof data !== "undefined") {
+                    if (!cachedSettings.hasOwnProperty(key)) cachedSettings[key] = {};
+                    cachedSettings[key].data = data;
+                    cachedSettings[key].key = key
+                    syncDataToDb(key, cachedSettings[key], 'settings');
+                }
+                else if (typeof key !== "undefined") return cachedSettings[key]
+                return cachedSettings;
+            },
+            remove_settings: function(key) {
+                if (typeof key !== "undefined") delete cachedSettings[key]
+                else cachedSettings = SETTINGS_RESET;
+                deleteEntryFromDb(key, 'settings');
+            },
+            edict_data: function(key, data) {
+                if (typeof key !== "undefined" && typeof data !== "undefined") {
+                    cachedEdictData[key] = data;
+                    cachedEdictData[key].key = key
+                    syncDataToDb(key, cachedEdictData[key], 'edict_data');
+                }
+                else if (typeof key !== "undefined") return cachedEdictData[key]
+                return structuredClone(cachedEdictData);
+            },
+            remove_edict_data: function(key) {
+                if (typeof key !== "undefined") delete cachedEdictData[key]
+                else cachedEdictData = {};
+                deleteEntryFromDb(key, 'edict_data');
+            },
+            edict_data_create_key: function(data) {
+                return data.detail_link;
+            },
+            init: function(last_query_info_cb, settings_cb) {
+                init(last_query_info_cb, settings_cb);
+            }
+       }
+    }();
+    let Util = function() {
+        function enterFs(element) {
+            var requestMethod = element.requestFullscreen ||
+                                element.mozRequestFullScreen ||
+                                element.webkitRequestFullscreen ||
+                                element.msRequestFullscreen;
+            if (requestMethod) {
+                requestMethod.call(element);
+            }
+        }
+        function exitFs(element) {
+            var requestMethod = element.exitFullscreen ||
+                                element.mozCancelFullScreen ||
+                                element.webkitExitFullscreen ||
+                                element.msExitFullscreen;
+            if (requestMethod) {
+                requestMethod.call(element);
+            }
+        }
+        function normalizeAdr(adr) {
+            // Remove Appending adresses
+            adr = adr.replace(/\s+ident\s+.*$/, '');
+            adr = adr.replace(/\s*,.*$/i, '');
+
+            adr = adr.replace(/(\d+[a-z]?)\s*-\s*(\d+[a-z]?)/i, '$1-$2');
+            adr = adr.replace(/(\d+[a-z]?)\s+bis\s+(\d+[a-z]?)/i, '$1-$2');
+
+            adr = adr.trim();
+            let streetNme = '', streetNbr = '', streetNbrApndx = '', streetNbrTo = '', streetNbrToApndx = '', buildingRef = '';
+            if (/^((\d*\.)?[\D ]+) *(\d+)([A-Za-z]*?)\-(\d+)([A-Za-z]*?) *[\/,](.*)$/.test(adr)) {
+                [, streetNme, , streetNbr, streetNbrApndx, streetNbrTo, streetNbrToApndx, buildingRef] = adr.match(/^((\d*\.)?[\D ]+) *(\d+)([A-Za-z]*?)\-(\d+)([A-Za-z]*?) *[\/,](.*)$/);
+            } else if (/^((\d*\.)?[\D ]+) *(\d+)([A-Za-z]*?)\-(\d+)([A-Za-z]*?) *(.*)$/.test(adr)) {
+                [, streetNme, , streetNbr, streetNbrApndx, streetNbrTo, streetNbrToApndx, buildingRef] = adr.match(/^((\d*\.)?[\D ]+) *(\d+)([A-Za-z]*?)\-(\d+)([A-Za-z]*?) *(.*)$/);
+            } else if (/^((\d*\.)?[\D ]+) *(\d+)([A-Za-z]*?)\-(\d+)([A-Za-z]*)$/.test(adr)) {
+                [, streetNme, , streetNbr, streetNbrApndx, streetNbrTo, streetNbrToApndx] = adr.match(/^((\d*\.)?[\D ]+) *(\d+)([A-Za-z]*?)\-(\d+)([A-Za-z]*)$/);
+            } else if (/^((\d*\.)?[\D ]+) *(\d+)([A-Za-z]*?) *[\/,](.*)$/.test(adr)) {
+                [, streetNme, , streetNbr, streetNbrApndx, buildingRef] = adr.match(/^((\d*\.)?[\D ]+) *(\d+)([A-Za-z]*?) *[\/,](.*)$/);
+            } else if (/^((\d*\.)?[\D ]+) *(\d+)([A-Za-z]*)$/.test(adr)) {
+                [, streetNme, , streetNbr, streetNbrApndx] = adr.match(/^((\d*\.)?[\D ]+) *(\d+)([A-Za-z]*)$/);
+            } else if (/^((\d*\.)?[\D ]+) *(\d+)([A-Za-z]+) *(.*)$/.test(adr)) {
+                [, streetNme, , streetNbr, streetNbrApndx, buildingRef] = adr.match(/^((\d*\.)?[\D ]+) *(\d+)([A-Za-z]+) *(.*)$/);
+            } else if (/^((\d*\.)?[\D ]+) *(\d+) *(.*)$/.test(adr)) {
+                [, streetNme, , streetNbr, buildingRef] = adr.match(/^((\d*\.)?[\D ]+) *(\d+) *(.*)$/);
+            } else {
+                streetNme = adr;
+            }
+
+            buildingRef = buildingRef.trim();
+            buildingRef = buildingRef.replace(/^(Stg\.?|Stiege)\s+/, '');
+            buildingRef = buildingRef.replace(/(Stg\.?|Stiege)\s+/, '/');
+            buildingRef = buildingRef.replace(/(\d+)[\s.]Stock/i, '');
+
+            //buildingRef = buildingRef.replace(/^([\d+a-z])\/.*$/i, '$1');
+            //buildingRef = buildingRef.replace(/^Top\s+/i, '');
+            //buildingRef = buildingRef.replace(/\s+Top\s+/i, '/');
+
+            // Remove Apt. number
+            buildingRef = buildingRef.replace(/^Top\s+.*$/i, '');
+            buildingRef = buildingRef.replace(/\s+Top\s+.*$/i, '');
+            buildingRef = buildingRef.replace(/^(\d+[a-z]?).+$/i, '$1');
+
+            // Remove Appending adresses
+            buildingRef = buildingRef.replace(/\s+und\s+.*$/, '');
+            buildingRef = buildingRef.replace(/^[a-z]{2,}.+$/i, '');
+
+            buildingRef = buildingRef.trim();
+
+
+            return [streetNme.trim(), streetNbr.trim(), streetNbrApndx.trim(), streetNbrTo.trim(), streetNbrToApndx.trim(), buildingRef.trim()];
+        }
+        return {
+            normalize_adr: function(adr) {
+                return normalizeAdr(adr);
+            },
+            encode_uri: function(val) {
+                return encodeURIComponent(val).replace(/[!'()*]/g, function(c) { return '%' + c.charCodeAt(0).toString(16); });
+            },
+            postal_code_validate: function(val) {
+                val = val.replace(/[^0-9\s]/g, '');
+                const input = $('#zip_codes');
+                const zip_codes = input.val().trim().split(/\s+/);
+                input.get(0).setCustomValidity('');
+                if (zip_codes[0] === "") {
+                    //input.get(0).setCustomValidity(INPUT_ZIP_MESSAGE);
+                }
+                else {
+                    jQuery.each(zip_codes, function(i, zip_code) {
+                      if (zip_code.length !== 4) {
+                          input.get(0).setCustomValidity(INPUT_ZIP_MESSAGE);
+                          return;
+                      }
+                    });
+                }
+                return val;
+            },
+            number: function(val) {
+                return val.replaceAll('.', '').replace(',', '.').replace('m2', '').replace(/[^0-9\.]+/g, '').trim();
+            },
+            date_time: function(val, type) {
+                if (val === null || val === '') return '';
+                const [datePart, timePart] = val.split(' ');
+                const [day, month, year] = datePart.split('.');
+                let formattedDate = '';
+                if (type === 'display') formattedDate = `${day.padStart(2, '0')}.${month.padStart(2, '0')}.${year}`
+                else formattedDate = `${year}${month.padStart(2, '0')}${day.padStart(2, '0')}`
+                return `${formattedDate} ${timePart}`;
+            },
+            enter_fullscreen: function(el) {
+                var target = $(el).data('fs_target'),
+                t = !target ? document.documentElement : $(target).get()[0];
+                enterFs(t);
+            },
+            exit_fullscreen: function(el) {
+                exitFs(el);
+            },
+            zero_pad: (num, places) => String(num).padStart(places, '0'),
+        }
+    }();
+    let DTColumn = function() {
+        const mapping = {
+            'Dienststelle': { name: 'court' },
+            'Aktenzeichen': { name: 'ref_id'},
+            'Versteigerungstermin': { name: 'date_of_auction' },
+            //'Versteigerungsort': { name: 'place_of_auction' },
+            'Neuer Versteigerungstermin': { name: 'date_of_auction' },
+            'Liegenschaftsadresse' : { name: 'adr'},
+            'Adresse' : { name: 'adr'},
+            'PLZ/Ort' : { name: 'town' },
+            'Grundstücksgröße' : { name: 'size_of_land', formatter: Util.number },
+            'Objektgröße' : { name: 'size_of_object', formatter: Util.number },
+            'Schätzwert' : { name: 'valuation', formatter: Util.number },
+            'Ausrufpreis' : { name: 'valuation', formatter: Util.number },
+            'Meistbot' : { name: 'valuation', formatter: Util.number },
+            'Geringstes Gebot' : { name: 'lowest_bid', formatter: Util.number },
+            'Kurzgutachten': { name: 'short_report', data_process(data) { return data.links } },
+            'Langgutachten' : { name: 'files' ,  data_process(data) { return data.links.length > 0 ? { links: data.links, text: data.value }: {} } },
+            'Gutachten/Texte': { name: 'files',  data_process(data) { return data.links.length > 0 ? { links: data.links, text: data.value }: {} } },
+            'Foto(s)' : { name: 'photos', data_process(data) { return data.links } },
+            'Grundriss(e)' : { name: 'plans', data_process(data) { return data.links } },
+            'Lageplan' : { name: 'addit_plans', data_process(data) { return data.links } },
+            'Straße' : { name: 'adr' },
+            'Wert des Objekts' : { name: 'valuation', formatter: Util.number },
+            'wegen' : { name: 'about' },
+            'Bekannt gemacht am': {
+                name: 'date',
+                data_process(data) {
+                    const mDate = /(\d{2})\.(\d{2})\.(\d{4})/.exec(data.value);
+                    return Number(mDate[3] + mDate[2] + mDate[1]);
+                }
+            },
+            'Letzte Änderung': {
+                name: 'date',
+                data_process(data) {
+                    const mDate = /(\d{2})\.(\d{2})\.(\d{4})/.exec(data.value);
+                    return Number(mDate[3] + mDate[2] + mDate[1]);
+                }
+            },
+            'Letzte Änderung am': {
+                name: 'date',
+                data_process(data) {
+                    const mDate = /(\d{2})\.(\d{2})\.(\d{4})/.exec(data.value);
+                    return Number(mDate[3] + mDate[2] + mDate[1]);
+                }
+            },
+
+        };
+        const cat = {
+            'Eigentumswohnung': true,
+            'Wohnungseigentumsobjekt': true,
+            'Einfamilienhaus': true,
+            'Zweifamilienhaus': true,
+            'Mehrfamilienhaus': true,
+            'Baurecht': true,
+            'Garconniere': true,
+            'Dachgeschoßwohnung': true,
+            'Dachterrassenwohnung': true,
+            'Maisonette': true,
+            'Reihenhaus': true,
+            'Mietshaus': true,
+            'Mietwohnhaus': true,
+            'Hausanteil': true,
+            'Sonstiges': true,
+            'Superädifikat': true,
+            'Gartenwohnung': true,
+            '#GGH': 'gemischt genutztes Haus',
+            '#BBL': 'bebaubare Liegenschaft',
+            '#GL': 'gewerbliche Liegenschaft',
+            '#LF': 'land- und forstwirtschaftlich genutzte Liegenschaft',
+            '#UL': 'unbebaute Liegenschaft'
+        };
+        const apartment_icon = '<i class="fa-solid fa-building-user fa-icon"></i>'
+        const house_icon = '<i class="fa-solid fa-house fa-icon"></i>';
+        const garconniere_icon = '<i class="fa-solid fa-person-shelter fa-icon"></i>'
+        const roof_apartment_icon = '<i class="fa-solid fa-people-roof fa-icon"></i>';
+        const house_family_icon = '<i class="fa-solid fa-house-user fa-icon"></i>';
+        const house_2_icon = '<i class="fa-solid fa-house-2 fa-icon-smaller"></i>';
+        const house_garden = '<i class="fa-solid fa-tree-city fa-icon"></i>';
+        const house_flag_icon = '<i class="fa-solid fa-house-flag fa-icon"></i>';
+        const building_icon = '<i class="fa-solid fa-building fa-icon"></i>';
+        const industry_icon = '<i class="fa-solid fa-industry fa-icon"></i>';
+        const tree_icon = '<i class="fa-solid fa-tree-2 fa-icon"></i>';
+        const undeveloped_prop_icon =
+        `<span>
+            <i class="fa-solid fa-window-minimize fa-icon"></i>
+            <i class="fa-solid fa-tree fa-icon fa-stack-1x" style="margin-top: 1px;"></i>
+        </span>`;
+        const buildable_prop_icon =
+        `<span>
+            <i class="fa-solid fa-window-minimize fa-icon"></i>
+            <i class="fa-solid fa-person-digging fa-icon fa-stack-1x" style="margin-top: 0;"></i>
+        </span>`;
+        const house_sharing_icon =
+        `<span>
+            <i class="fa-solid fa-house fa-icon"></i>
+            <i class="fa-solid fa-percent fa-percent-2 fa-stack-1x"></i>
+        </span>`;
+        const parking_icon = '<i class="fa-solid fa-car fa-icon"></i>';
+        const category_icon = {
+            'Eigentumswohnung': apartment_icon,
+            'Wohnungseigentumsobjekt': apartment_icon,
+            'Einfamilienhaus': house_family_icon,
+            'Zweifamilienhaus':house_icon,
+            'Mehrfamilienhaus': building_icon,
+            'Baurecht': house_flag_icon,
+            'Garconniere':  garconniere_icon,
+            'Dachgeschoßwohnung': apartment_icon,
+            'Dachterrassenwohnung': apartment_icon,
+            'Maisonette': apartment_icon,
+            'Reihenhaus': house_2_icon,
+            'Mietshaus': building_icon,
+            'Mietwohnhaus': building_icon,
+            'Hausanteil':  house_sharing_icon,
+            'Sonstiges': '',
+            'Superädifikat': house_flag_icon,
+            'Gartenwohnung': house_garden,
+            'gemischt genutztes Haus': building_icon,
+            'bebaubare Liegenschaft':   buildable_prop_icon,
+            'gewerbliche Liegenschaft': industry_icon,
+            'land- und forstwirtschaftlich genutzte Liegenschaft': tree_icon,
+            'unbebaute Liegenschaft':  undeveloped_prop_icon
+        }
+        return {
+            get_category_icon: function(data) {
+                if (data.edict_entity === 'lgv' && data.api_data.col_3.startsWith('KFZ-')) return parking_icon
+                const categ = DTColumn.extract_categories(data.adr_and_cat).trim();
+                return category_icon.hasOwnProperty(categ) ? category_icon[categ] : '';
+            },
+            get_info: function(data) {
+                let [col, val] = [mapping[data.title], null];
+                if (col.hasOwnProperty('data_process')) {
+                    val = col.data_process(data);
+                }
+                else { val = col.hasOwnProperty('formatter') ? col.formatter(data.value) : data.value; }
+                return [col.name, val];
+            },
+            edict_type: function(title) {
+               return (title.startsWith('Versteigerung') || title.startsWith('Verschiebung') || title.startsWith('Entfall') || title.startsWith('Zuschlag mit'))
+                      ? 'auction' : (title.startsWith('Meistbotsverteilung') || title.startsWith('Zuschlag ohne'))
+                      ? 'auction_bid' : 'other'
+            },
+            mapping: function() {
+                return mapping;
+            },
+            extract_categories: function(data) {
+                return data.replace(cat['#GGH'], '#GGH')
+                           .replace(cat['#BBL'], '#BBL')
+                           .replace(cat['#GL'], '#GL')
+                           .replace(cat['#LF'], '#LF')
+                           .replace(cat['#UL'], '#UL')
+                           .split(/\s+|,\s/)
+                           .filter(w => cat[w]).join("/")
+                           .replace('#GGH', cat['#GGH'])
+                           .replace('#BBL', cat['#BBL'])
+                           .replace('#GL', cat['#GL'])
+                           .replace('#LF', cat['#LF'])
+                           .replace('#UL', cat['#UL']);
+            },
+            remove_categories: function(data) {
+                data = data.replace(cat['#GGH'], '#GGH')
+                           .replace(cat['#BBL'], '#BBL')
+                           .replace(cat['#GL'], '#GL')
+                           .replace(cat['#LF'], '#LF')
+                           .replace(cat['#UL'], '#UL');
+                let known_categories = data.split(/\s+|,\s/)
+                                           .filter(w => cat[w]);
+                known_categories.forEach(category => {
+                    data = data.replace(category, "");
+                });
+                return data.replace(/(\s|\-|,)+$/, "").trim();
+            },
+            object_specific_data_names: function() {
+                return { adr: true, town: true, lowest_bid: true, valuation: true, size_of_land: true, size_of_object: true,  }
+            },
+            init: function() {
+                return {
+                    id: '',
+                    court: '',
+                    ref_id: '',
+                    edict_title: '',
+                    date: '',
+                    adr_and_cat: '',
+                    detail_link: '',
+                    size_of_land: '-',
+                    size_of_object: '-',
+                    valuation: '-',
+                    lowest_bid: '-',
+                    date_of_auction: '',
+                    place_of_auction: '',
+                    category: '',
+                    photos: [],
+                    plans: [],
+                    addit_plans: [],
+                    files: {},
+                    api_data: [],
+                    edict_entity: '',
+                    actions: '',
+                    unableToLocate: null
+                }
+            }
+        }
+    }();
+
+    $(document).ready(function() {
+        $( "#menu" ).menu({
+            items: "> :not(.ui-widget-header)"
+        });
+
+        $(document).on("click", function(e) {
+            var $target = $(e.target);
+            if (!$target.closest("#menu").length) {
+                $("#menu").hide()
+            }
+        });
+        // Prevent closing when clicking inside the menu
+        $("#menu").on("click", function(e) {
+            e.stopPropagation();
+        });
+
+        $('#dialog-cities').dialog({
+            dialogClass: 'no-close' + (IS_ANDROID ? '' : ' round-border'),
+            title: 'Ortssuche',
+            height: IS_ANDROID ? height() : 700,
+            width: IS_ANDROID ? width() : 700,
+            autoOpen: false,
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            closeOnEscape: true,
+            buttons: {
+                back: {
+                    text: '',
+                    html: '<i class="fa-solid fa-arrow-left-long"></i>',
+                    class: 'left ui-entry ui-icon-btn', 
+                    click: function() {
+                        $(this).dialog("close");
+                    }
+                },
+                ok: {
+                    html: '&nbsp;Ok&nbsp;',
+                    class: 'right ui-entry ui-last-btn',
+                    click: function() {
+                        $(this).dialog("close");
+                    }
+                },
+                reset: {
+                    html: 'Zurücksetzen', //'<div class="aligned"><i class="fa-solid fa-filter-circle-xmark fa-icon-next-to-text" style="font-size:10px;"></i><span>Zurücksetzen</span>',
+                    class: 'right ui-entry',
+                    click: function() {
+                        resetSelectedCities();
+                        showSelectedCities();
+                        //$(this).dialog("close");
+                    }
+                },
+            },
+            open: function( e, ui ) {
+                Popups.popup_opened(e.target.id);
+                $('body').css('overflow', 'hidden');
+                showSelectedCities();
+            },
+            close: function( e, ui ) {
+                Popups.popup_closed(e.target.id);
+                $('body').css('overflow', 'auto');
+            }
+        });
+
+        $('#dialog-regions').dialog({
+            dialogClass: 'no-close' + (IS_ANDROID ? '' : ' round-border'),
+            title: 'Regionen',
+            height: IS_ANDROID ? height() : 700,
+            width: IS_ANDROID ? width() : 700,
+            autoOpen: false,
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            closeOnEscape: true,
+            buttons: {
+                back: {
+                    text: '',
+                    html: '<i class="fa-solid fa-arrow-left-long"></i>',
+                    class: 'left ui-entry ui-icon-btn', //ui-icon-btn  
+                    click: function() {
+                        showSelectedRegions();
+                        $(this).dialog("close");
+                    }
+                },
+                ok: {
+                    html: '&nbsp;Ok&nbsp;',
+                    class: 'right ui-entry ui-last-btn',
+                    click: function() {
+                        showSelectedRegions();
+                        $(this).dialog("close");
+                    }
+                },
+                reset: {
+                    html: 'Zurücksetzen',
+                    class: 'right ui-entry',
+                    click: function() {
+                        resetSelectedRegions();
+                    }
+                },
+            },
+            open: function( e, ui ) {
+                Popups.popup_opened(e.target.id);
+                $('body').css('overflow', 'hidden');
+            },
+            close: function( e, ui ) {
+                Popups.popup_closed(e.target.id);
+                $('body').css('overflow', 'auto');
+            }
+        });
+
+        
+        $("#dialog-searchsetting").dialog({
+            dialogClass: 'no-close' + (IS_ANDROID ? '' : ' round-border'),
+            title: 'Sucheinstellungen',
+            height: IS_ANDROID ? height() : 700,
+            width: IS_ANDROID ? width() : 700,
+            autoOpen: false,
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            closeOnEscape: true,
+            buttons: {
+                back: {
+                    text: '',
+                    html: '<i class="fa-solid fa-arrow-left-long"></i>',
+                    class: 'left ui-icon-btn ui-entry',
+                    click: function() {
+                        $(this).dialog("close");
+                    }
+                },
+                search: {
+                    text: 'Suchen',
+                    class: 'right ui-entry ui-last-btn',
+                    click: function() {
+                        $('#get-auctions').trigger("submit");
+                        $(this).dialog("close");
+                    }
+                },
+                reset: {
+                    text: '',
+                    html: 'Zurücksetzen',
+                    class: 'right ui-entry',
+                    click: function() {
+                        $("#suggest-cities").val('');
+                        $("#radius").val('');
+                        $('#zip_codes').data("selected_cities", {});
+                        $("#zip_codes").val('');
+                        $("#search_profile_name").val('');
+                        $("#size_of_object_from").val('');
+                        $("#size_of_object_to").val('');
+                        $("#valuation option").prop('selected', false);
+                        $("#categories option").prop('selected', false);
+                        $("#edict_types option").prop('selected', false);
+                        $("#federal_states option").prop('selected', false);
+                        $(".BL select option").prop('selected', false);
+                        showSelectedRegions();
+                    } 
+                }
+                /*
+                delete: {
+                    text: 'Alle Einträge löschen',
+                    class: 'right ui-entry',
+                    click: function() {
+                        $(this).dialog("close");
+                        Cache.remove_edict_data();
+                        loadEdictFromBookmark();
+                    }
+                },*/
+            },
+            open: function( e, ui ) {
+                Popups.popup_opened(e.target.id);
+                $('body').css('overflow', 'hidden');
+            },
+            close: function( e, ui ) {
+                Popups.popup_closed(e.target.id);
+                $('body').css('overflow', 'auto');
+            }
+        });
+
+        $("#dialog-bookmark-setting").dialog({
+            dialogClass: 'no-close' + (IS_ANDROID ? '' : ' round-border'),
+            title: 'Merkliste',
+            height: IS_ANDROID ? height() : 700,
+            width: IS_ANDROID ? width() : 700,
+            autoOpen: false,
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            closeOnEscape: true,
+            buttons: {
+                back: {
+                    text: '',
+                    html: '<i class="fa-solid fa-arrow-left-long"></i>',
+                    class: 'left ui-icon-btn ui-entry',
+                    click: function() {
+                        $(this).dialog("close");
+                    }
+                },
+                delete: {
+                    text: 'Alle Einträge löschen',
+                    class: 'right ui-entry ui-last-btn',
+                    click: function() {
+                        $(this).dialog("close");
+                        Cache.remove_edict_data();
+                        loadEdictFromBookmark();
+                    }
+                },
+            },
+            open: function( e, ui ) {
+                Popups.popup_opened(e.target.id);
+                $('body').css('overflow', 'hidden');
+                const bookmarkList = $('#bookmark-list-edit');
+                bookmarkList.html('');
+                Object.keys(Cache.edict_data()).forEach(function(name){
+                    bookmarkList.append($('<div>', {
+                        html:  `<input class="ui-entry ui-input" style="width:100%" placeholder="Name eingeben" type="text" maxlength="40" value="${name}">
+                                <button class="ui-icon-btn ui-entry ui-button clickable bookmark-change_name" type="button">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                </button>
+                                <button class="ui-icon-btn ui-entry ui-button clickable bookmark-edit" type="button">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button class="ui-icon-btn ui-entry ui-button clickable bookmark-delete" type="button">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>`,
+                        class: 'aligned',
+                        'data-bookmark_name': name
+                    }));
+                });
+
+            },
+            close: function( e, ui ) {
+                Popups.popup_closed(e.target.id);
+                $('body').css('overflow', 'auto');
+            }
+        });
+
+        $("#dialog-bookmark").dialog({
+            dialogClass: 'no-close' + (IS_ANDROID ? '' : ' round-border'),
+            title: 'Merkliste',
+            /*height: IS_ANDROID ? height() : 'auto',
+            width: IS_ANDROID ? width() : 'auto',*/
+            autoOpen: false,
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            closeOnEscape: true,
+            buttons: {
+                back: {
+                    text: '',
+                    html: '<i class="fa-solid fa-arrow-left-long"></i>',
+                    class: 'left ui-icon-btn ui-entry',
+                    click: function() {
+                        $(this).dialog("close");
+                    }
+                },
+                load: {
+                    text: 'Laden',
+                    class: 'right ui-last-btn ui-entry',
+                    click: function() {
+                        $(this).dialog("close");
+                        loadEdictFromBookmark();
+                    }
+                },
+                delete: {
+                    text: 'Löschen',
+                    class: 'right ui-entry',
+                    click: function() {
+                        const name = $('#bookmark-list').val();
+                        if (name === '') return;
+                        Cache.remove_edict_data(name);
+                        if ($("#bookmark-name").val() === name) $("#bookmark-name").val("");
+                        updateBookmarkSelection();
+                    }
+                },
+            },
+            open: function( e, ui ) {
+                Popups.popup_opened(e.target.id);
+                $('body').css('overflow', 'hidden');
+                $('#bookmark-name').val("");
+            },
+            close: function( e, ui ) {
+                Popups.popup_closed(e.target.id);
+                $('body').css('overflow', 'auto');
+            }
+        });
+        
+        $("#dialog-cleardata").dialog({
+            dialogClass: 'no-close' + (IS_ANDROID ? '' : ' round-border'),
+            title: 'Daten bereinigen',
+            autoOpen: false,
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            closeOnEscape: true,
+            buttons: {
+                back: {
+                    text: '',
+                    html: '<i class="fa-solid fa-arrow-left-long"></i>',
+                    class: 'left ui-icon-btn ui-entry',
+                    click: function() {
+                        $(this).dialog("close");
+                    }
+                },
+                delete: {
+                    text: 'Bereinigen',
+                    class: 'right ui-entry ui-last-btn',
+                    click: function() {
+                        if ($('input.cleargeodata')[0].checked) 
+                            GeoLocation.storage().remove_coordinates(); 
+                        if ($('input.clearcache')[0].checked) 
+                            Cache.remove_edict_data_query(); 
+                        if ($('input.clearsetting')[0].checked) { 
+                            Cache.remove_settings(); 
+                            Cache.remove_edict_search();
+                            Cache.remove_edict_data();
+                        }
+                        $('input.cleargeodata')[0].checked = false;
+                        $('input.clearcache')[0].checked = false;
+                        $('input.clearsetting')[0].checked = false;
+
+                        showStoredEntries();
+                    }
+                },
+            },
+            open: function( e, ui ) {
+                Popups.popup_opened(e.target.id);
+                $('body').css('overflow', 'hidden');
+                showStoredEntries();
+            },
+            close: function( e, ui ) {
+                Popups.popup_closed(e.target.id);
+                $('body').css('overflow', 'auto');
+            }
+        });
+        $("#dialog-searchprofile-setting").dialog({
+            dialogClass: 'no-close' + (IS_ANDROID ? '' : ' round-border'),
+            title: 'Suchprofil',
+            height: IS_ANDROID ? height() : 700,
+            width: IS_ANDROID ? width() : 700,
+            autoOpen: false,
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            closeOnEscape: true,
+            buttons: {
+                back: {
+                    text: '',
+                    html: '<i class="fa-solid fa-arrow-left-long"></i>',
+                    class: 'left ui-icon-btn ui-entry',
+                    click: function() {
+                        $(this).dialog("close");
+                    }
+                },
+                delete: {
+                    text: 'Alle Einträge löschen',
+                    class: 'right ui-entry ui-last-btn',
+                    click: function() {
+                        $(this).dialog("close");
+                        Cache.remove_edict_search();
+                    }
+                },
+            },
+            open: function( e, ui ) {
+                Popups.popup_opened(e.target.id);
+                $('body').css('overflow', 'hidden');
+                const searchProfileList = $('#searchprofile-list-edit');
+                searchProfileList.html('');
+                Object.keys(Cache.edict_search()).forEach( function(name) {
+                    //$(this)[0].checked
+                    const data = Cache.edict_search(name);
+                    searchProfileList.append($('<div>', {
+                        html:  `<div class="aligned"><input class="ui-entry ui-input" style="width:100%" placeholder="Name eingeben" type="text" maxlength="40" value="${name}">
+                                <button class="ui-icon-btn ui-entry ui-button clickable searchprofile-change_name" type="button">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                </button>
+                                <button class="ui-icon-btn ui-entry ui-button clickable searchprofile-edit" type="button">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button class="ui-icon-btn ui-entry ui-button clickable searchprofile-delete" type="button">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                                </div>
+                                <div class="separator"></div>
+                                <div class="right">
+                                    <label class="ui-entry ui-button checkbox clickable" ><input type="checkbox" name="searchagent" class="searchagent" ${data.search_agent ? 'checked' : ''}> Suchagent</label>
+                                </div>
+                                <!--<label class="ui-entry ui-button checkbox clickable" ><input type="checkbox" name="searchagent" class="searchagent" ${data.search_agent ? 'checked' : ''}> Suchagent</label>-->`,
+                        class: 'search-profile',
+                        'data-searchprofile_name': name,
+                        style: 'overflow: hidden;'
+                    }));
+                });
+
+            },
+            close: function( e, ui ) {
+                Popups.popup_closed(e.target.id);
+                $('body').css('overflow', 'auto');
+            }
+        });
+
+        $("#dialog-searchprofile").dialog({
+            dialogClass: 'no-close round-border',
+            title: 'Suchprofil',
+            autoOpen: false,
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            closeOnEscape: true,
+            buttons: {
+                back: {
+                    text: '',
+                    html: '<i class="fa-solid fa-arrow-left-long"></i>',
+                    class: 'left ui-icon-btn ui-entry',
+                    click: function() {
+                        $(this).dialog("close");
+                    }
+                },
+                select: {
+                    text: 'Laden',
+                    class: 'right ui-entry ui-last-btn',
+                    click: function() {
+                        const name = $('#search-profiles').val();
+                        loadSearchSetting(name);
+                        $(this).dialog("close");
+                    }
+                },
+                delete: {
+                    text: 'Löschen',
+                    class: 'right ui-entry',
+                    click: function() {
+                        const name = $('#search-profiles').val();
+                        if (name === '') return;
+                        Cache.remove_edict_search(name);
+                        if ($("#search_profile_name").val() === name) $("#search_profile_name").val("");
+                        updateSearchProfileSelection(this);
+                    }
+                },
+            },
+            open: function( e, ui ) {
+                Popups.popup_opened(e.target.id);
+                $('body').css('overflow', 'hidden');
+                updateSearchProfileSelection(this);
+            },
+            close: function( e, ui ) {
+                Popups.popup_closed(e.target.id);
+                $('body').css('overflow', 'auto');
+            }
+        });
+
+        $("#dialog-info").dialog({
+            dialogClass: 'no-close round-border',
+            draggable: true,
+            title: 'Nachricht',
+            /*
+            height: 130,
+            width: 370,*/
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            closeOnEscape: true,
+            buttons: {
+                ok: {
+                    html: '&nbsp;Ok&nbsp;',
+                    class: 'center ui-entry',
+                    click: function() {
+                        $(this).dialog("close");
+                    }
+                }
+            },
+            open: function( e, ui ) {
+                Popups.popup_opened(e.target.id);
+                $('body').css('overflow', 'hidden');
+            },
+            close: function( e, ui ) {
+                Popups.popup_closed(e.target.id);
+                $('body').css('overflow', 'auto');
+            }
+        });
+        $("#dialog-images").dialog({
+            dialogClass: 'no-close' + (IS_ANDROID ? ' no-title' : ' round-border'),
+            draggable: true,
+            title: '',
+            height: IS_ANDROID ? height() : 700,
+            width: IS_ANDROID ? width() : 700,
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            closeOnEscape: true,
+            buttons: {
+                back: {
+                    text: '',
+                    html: '<i class="fa-solid fa-arrow-left-long"></i>',
+                    class: 'left ui-icon-btn ui-entry',
+                    click: function() {
+                        $(this).dialog("close");
+                    }
+                }
+            },
+            open: function( e, ui ) {
+                Popups.popup_opened(e.target.id);
+                $('body').css('overflow', 'hidden');
+            },
+            close: function( e, ui ) {
+                Popups.popup_closed(e.target.id);
+                $('body').css('overflow', 'auto');
+            }
+
+        });
+        $("#dialog-map").dialog({
+            dialogClass: 'no-close' + (IS_ANDROID ? ' no-title' : ' round-border'),
+            draggable: true,
+            title: 'Kartenansicht',
+            height: IS_ANDROID ? height() : 750,
+            width: IS_ANDROID ? width() : 960,
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            closeOnEscape: true,
+            buttons: {
+                back: {
+                    text: '',
+                    html: '<i class="fa-solid fa-arrow-left-long"></i>',
+                    class: 'left ui-icon-btn ui-entry',
+                    click: function() {
+                        $(this).dialog("close");
+                    }
+                }
+            },
+            open: function( e, ui ) {
+                Popups.popup_opened(e.target.id);
+                $('body').css('overflow', 'hidden');
+            },
+            close: function( e, ui ) {
+                Popups.popup_closed(e.target.id);
+                $('body').css('overflow', 'auto');
+            }
+        });
+
+        //$(function() {
+
+            function fnPrepareResponse(apiData) {
+                var cities = [];
+                apiData.data.forEach(city => {
+                    let [zip_code, city_name, state] = city;
+                    cities.push({
+                        label: `${zip_code} - ${city_name} (${state})`,
+                        value: city_name,
+                        zip_code: zip_code
+                    });
+                });
+                return cities;
+            };
+            function fnGetCities(request, response) {
+                $.ajax({
+                    headers: {"Accept": "application/json; charset=utf-8"},
+                    url: BASE_URL + '/edict/cities',
+                    crossDomain: true,
+                    data: { q: request.term },
+                    success: function(apiData) {
+                        var cities = fnPrepareResponse(apiData);
+                        response(cities);
+                    },
+                    error: function(xhr, textStatus, error) {
+                        console.log("API nicht erreichbar - " + textStatus + ": " + error);
+                    }
+                })
+            }
+            function fnGetCitiesByLocation (location, request, response) {
+                $.ajax({
+                    headers: {"Accept": "application/json; charset=utf-8"},
+                    url: BASE_URL + '/edict/cities',
+                    crossDomain: true,
+                    data: { latitude: location.lat, longitude: location.lng },
+                    success: function(apiData) {
+                        var cities = fnPrepareResponse(apiData);
+                        response(cities);
+                    },
+                    error: function(xhr, textStatus, error) {
+                        console.log("API nicht erreichbar - " + textStatus + ": " + error);
+                    }
+                })
+            }
+            function fnCreateAutocomplete() {
+                $(this).data('ui-autocomplete')._renderItem = function(ul, item) {
+                    let selectedCities = $('#zip_codes').data("selected_cities");
+                    let className = selectedCities.hasOwnProperty(item.label) ? 'remove-city' : 'add-city';
+                    return $("<li>")
+                        .append(`<div class="city-item">
+                                    <span class="add-remove-city-icon ${className}" data-label="${item.label}" data-zip_code="${item.zip_code}">
+                                    <i class="fa-solid fa-circle-minus"></i>
+                                    <i class="fa-solid fa-circle-plus"></i>
+                                    </span>
+                                    <span>${item.label}</span>
+                                </div>`)
+                        .appendTo(ul);
+                };
+            }
+
+            $("#suggest-cities-by-geolocation").on("click", function(e) {
+                if (Object.keys(GeoLocation.current_location()).length > 0) {
+                    $("#suggest-cities").autocomplete("option", "source", function(request, response) {
+                        fnGetCitiesByLocation(GeoLocation.current_location(), request, response);
+                        $("#suggest-cities").autocomplete("option", "source", fnGetCities);
+                    });
+                    $("#suggest-cities").autocomplete("search", "location");
+                }
+            })
+
+            $("#suggest-cities").autocomplete({
+                minLength: 3,
+                source: fnGetCities,
+                select: function (e, ui) {
+                    let selectedCities = {};
+                    selectedCities[ui.item.label] = ui.item.zip_code;
+                    $('#zip_codes').val(ui.item.zip_code);
+                    $('#zip_codes').data("selected_cities", selectedCities);
+                    $('#get-auctions').trigger("submit");
+                },
+                create: fnCreateAutocomplete
+            });
+            $("#suggest-cities-2").autocomplete({
+                minLength: 3,
+                source: fnGetCities,
+                select: function (e, ui) {
+                    let selectedCities = $('#zip_codes').data("selected_cities");
+                    selectedCities[ui.item.label] = ui.item.zip_code;
+                    let zipCodes = [];
+                    jQuery.each(selectedCities, function(label, zip_code){
+                        zipCodes.push(zip_code);
+                    });
+                    $('#zip_codes').val(zipCodes.join(" "));
+                    $('#zip_codes').data("selected_cities", selectedCities);
+                    showSelectedCities();
+                },
+                create: fnCreateAutocomplete
+            });
+
+            $('.ui-autocomplete').on("click", ".ui-menu-item-wrapper span.add-city", function(e) {
+                e.stopPropagation();
+                let selectedCities = $('#zip_codes').data("selected_cities");
+                selectedCities[$(this).data("label")] = $(this).data("zip_code");
+                let zipCodes = {};
+                jQuery.each(selectedCities, function(label, zip_code){
+                    zipCodes[zip_code] = 1;
+                });
+                $('#zip_codes').val(Object.keys(zipCodes).join(" "));
+                $('#zip_codes').data("selected_cities", selectedCities);
+                $(this).removeClass("add-city");
+                $(this).addClass("remove-city");
+                showSelectedCities();
+            });
+            $('.ui-autocomplete').on("click", ".ui-menu-item-wrapper span.remove-city", function(e) {
+                e.stopPropagation();
+                let selectedCities = $('#zip_codes').data("selected_cities");
+                delete selectedCities[$(this).data("label")];
+                let zipCodes = {};
+                jQuery.each(selectedCities, function(label, zip_code){
+                    zipCodes[zip_code] = 1;
+                });
+                $('#zip_codes').val(Object.keys(zipCodes).join(" "));
+                $('#zip_codes').data("selected_cities", selectedCities);
+                $(this).removeClass("remove-city");
+                $(this).addClass("add-city");
+                showSelectedCities();
+            });
+
+            $.fn.dataTable.Api.register('showResponsiveContent()', function (row_idx, columns, src) {
+                const dt = this;
+                const data = dt.row(row_idx).data();
+                const adr = dt.cell(row_idx, 'adr_and_cat:name').render('display');
+                const kat = dt.cell(row_idx, 'category:name').render('display');
+                const actions = dt.cell(row_idx, 'actions:name').render('display');
+                const edict_title = dt.cell(row_idx, 'edict_title:name').render('display');
+                let img_link = data.photos.length > 0 ? data.photos[0] : data.plans.length > 0 ? data.plans[0] : data.addit_plans.length > 0 ? data.addit_plans[0] : null;
+                let respvData = [];
+                $.map(columns, function (col, i) {
+                    const dtCol = dt.settings()[0].aoColumns[col.columnIndex];
+                    if (col.hidden && dtCol.hasOwnProperty('responsiveData') && dtCol.responsiveData) {
+                        if (dtCol.data === 'valuation') col.title = data.edict_title.startsWith('Meistbotsverteilung') ? 'Meistbot' : 'Schätzwert';
+                        respvData.push(col)
+                    }
+                });
+                let render_method = $.fn.dataTable.Responsive.renderer.tableAll();
+                let table = render_method(dt, row_idx, respvData)[0].outerHTML;
+                let files = ''
+                if (!jQuery.isEmptyObject(data.files)) {
+                    let _files = [];
+                    jQuery.each(data.files.text.replaceAll(' (pdf)', '').split(/\s*\(.*?KB\)/), function(i, name) {
+                        if (name !== "")
+                        _files.push('<li style="display: inline-block; margin-right:8px;" class="file_icon"><a href="#" onclick="window.open(\'' + data.files.links[i] + '\', \'Datei\', \'width=850,height=850\');return false;">' + name + '</a></li>');
+                    });
+                    files = '<ul>' + _files.join('') + '</ul>';
+                }
+                return `
+                <div class="rspv_content" data-row="${row_idx}">
+                    <div class="header">
+                        ${src === 'map_marker' ? `<div class="title bold-font">${edict_title}</div>` : ''}
+                        <p>${kat}</p>
+                        <div class="aligned">
+                            <!-- <span style="font-size:11px; margin-right:3px;"">&#8853;</span>-->
+                            <i class="fa fa-map-marker fa-icon-next-to-text" style="font-size:10px"></i>
+                            <span style="font-size:12px">${adr}</span>
+                       </div>
+                    </div>
+                    <div class="center">
+                        <div>
+                            ${img_link === null ? '' :
+                            `<div class="left img-container">
+                                <a href="#" data-row="${row_idx}" onclick="openImageDialog(this);return false;"><img src="${img_link}"></a>
+                            </div>` }
+                            <div class="${img_link === null ? '' : 'left detail_container'}">
+                                ${table}
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="center">
+                        ${files}
+                    </div>
+                    <div class="footer">
+                        <div class="right">
+                            <button class="ui-entry ui-button clickable" type="button" >Kalender</button>
+                            <button class="ui-entry ui-button clickable" type="button" >Benachrichtigungen</button>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            let opt = {
+                drawCallback: function(settings) {
+                    $("#auctions").DataTable().columns.adjust().responsive.recalc();
+                },
+                rowCallback: function(tr, data, displayNum, displayIdx, rowIdx) {
+                    if (data.valuation === '-' && data.hasOwnProperty('short_report')) {
+                        const dt = $("#auctions").DataTable();
+                        const postData = { data: {'lgv':[{
+                            detail_link: data.short_report[0],
+                            col_1: '',
+                            col_2: '',
+                            col_3: '',
+                            edict_title: '',
+                            details: []
+                        }]}};
+
+                        $.ajax({
+                            headers: {"Accept": "application/json; charset=utf-8"},
+                            url: BASE_URL + "/edict/auction_details",
+                            type: 'POST',
+                            cache: true,
+                            data: JSON.stringify(postData),
+                            contentType: "application/json; charset=utf-8",
+                            success: function(apiData) {
+                                const newData = processApiData(apiData, COLUMN_FILTER_DISABLED);
+                                const mergedData = {
+                                    ...data,
+                                    ...Object.keys(newData[0]).reduce((obj, name) => {
+                                        obj[name] = DTColumn.object_specific_data_names().hasOwnProperty(name) ? newData[0][name] : data[name];
+                                        return obj;
+                                    }, {})
+                                };
+                                dt.row(rowIdx).data(mergedData);
+                            },
+                            error: function(xhr, textStatus, error) {
+                                console.log("API nicht erreichbar - " + textStatus + ": " + error);
+                            }
+                        });
+
+                    }
+                },
+                language: {
+                    emptyTable: '<i>Keine Objekte vorhanden.</i>',
+                    info: 'Zeige _START_ bis _END_ von _TOTAL_',
+                    infoEmpty: '',
+                    infoFiltered: '(gefiltert von _MAX_)',
+                    lengthMenu: '_MENU_',
+                    search: '',
+                    searchPlaceholder: " Filtern ...",
+                    zeroRecords: "Keine übereinstimmenden Objekte gefunden.",
+                    select: {
+                        rows: {
+                            _: "(%d Objekte gewählt)",
+                            0: "",
+                            1: "(1 Objekt gewählt)"
+                        }
+                    }
+                },
+                order: [[2, 'desc']],
+                data: [],
+                processing: false,
+                ordering: true,
+                autoWidth: false,
+                rowGroup: { dataSrc: 'id' },
+                deferRender: true,
+                select: {
+                    style: 'multi',
+                    selector: 'td:nth-child(2)'
+                },
+                responsive: {
+                    details: {
+                        display: $.fn.dataTable.Responsive.display.childRowImmediate,
+                        type: 'column',
+                        renderer: function(api, rowIdx, columns) {
+                            return api.showResponsiveContent(rowIdx, columns.filter(column => column.hidden && column.data && column.data !== '-'), 'responsive');
+                        }
+                    }
+                },
+                columnDefs: [
+                    //{ responsivePriority: 1, targets: [0, 1, 3, 6] },
+                    { orderable: false, targets: [0, 1] }
+                ],
+                columns: [
+                    { // 0
+                        title: '',
+                        defaultContent: "",
+                        className: 'dtr-control clickable expand_collapse collapse_all_icon fixed-width-ctrl-col'
+                    },
+                    { // 1
+                        title: '<i class="fa-solid fa-floppy-disk fa-btn-icon" aria-hidden="true"></i>', //'<span class="save_row_icon"/>',
+                        defaultContent: '',
+                        className: 'clickable save-row select-checkbox all fixed-width-ctrl-col',
+                    },
+                    { // 2
+                        data: 'date',
+                        visible: false
+                    },
+                    { // 3
+                        data: 'edict_title',
+                        name: 'edict_title',
+                        title: 'Edikt',
+                        className: 'break-word all min-width-edict_tile-col',
+                        render: function(data, type, row, meta) {
+                            if (type === 'display') {
+                                return '<a href="#" onclick="window.open(\'' + row.detail_link + '\', \'Edikt-Detail\', \'width=800,height=700\');return false;">' + data +'</a>';
+                            }
+                            return data;
+                        },
+                    },
+                    { // 4
+                        data: 'category',
+                        name: 'category',
+                        title: 'Kategorie',
+                        className: 'none',
+                        render: function(data, type, row, meta) {
+                            return DTColumn.extract_categories(row.adr_and_cat)
+                        }
+                    },
+                    { // 5
+                        data: 'adr_and_cat',
+                        title: 'Adresse',
+                        name: 'adr_and_cat',
+                        className: 'none',
+                        render: function(data, type, row, meta) {
+                            if (type == 'display') {
+                                let adr = DTColumn.remove_categories(data);
+                                const gmaps_url  = 'https://www.google.com/maps/search/?api=1&query=' + Util.encode_uri(adr);
+                                return '<a href="#" onclick="window.open(\'' + gmaps_url + '\', \'Adresse (Google Maps)\', \'width=1400,height=700\');return false;">' + adr + '</a>';
+                            }
+                            return data;
+                        }
+                    },
+                    { // 6
+                        data: 'valuation',
+                        title: 'Schätzwert/Meistbot',
+                        type: 'currency',
+                        name: 'valuation',
+                        className: 'nowrap all',
+                        responsiveData: true,
+                        render: $.fn.dataTable.render.number('.', ',', 2, '€ ' )
+                    },
+                    { // 7
+                        data: 'lowest_bid',
+                        title: 'Mindestgebot',
+                        type: 'currency',
+                        name: 'lowest_bid',
+                        className: 'nowrap none',
+                        responsiveData: true,
+                        render: $.fn.dataTable.render.number('.', ',', 2, '€ ' )
+                    },
+                    { // 8
+                        data: 'date_of_auction',
+                        title: 'Versteigerung',
+                        className: 'nowrap none',
+                        responsiveData: true,
+                        render: function(data, type, row, meta) {
+                            return Util.date_time(data.replace('am ', '').replace(' um ', ' ').replace(' Uhr', ''), type);
+                        }
+                    },
+                    { // 9
+                        data: 'place_of_auction',
+                        title: 'Versteigerungsort',
+                        className: 'none',
+                        responsiveData: true
+                    },
+
+
+                    { // 10
+                        data: 'size_of_land',
+                        title: 'Grundstücksgr.',
+                        className: 'nowrap none',
+                        responsiveData: true,
+                        render: $.fn.dataTable.render.number('.', ',', 2, '', ' m²' )
+                    },
+                    { // 11
+                        data: 'size_of_object',
+                        title: 'Objektgr.',
+                        name: 'size_of_object',
+                        className: 'nowrap',
+                        responsiveData: true,
+                        render: $.fn.dataTable.render.number('.', ',', 2, '', ' m²' )
+                    },
+                    { // 12
+                        data: 'files',
+                        title: 'Dateien',
+                        className: 'dt-left nowrap none',
+                        render: function(data, type, row, meta) {
+                            if (type === 'display') {
+                                if (jQuery.isEmptyObject(data)) return '';
+                                let files = [];
+                                jQuery.each(data.text.replaceAll(' (pdf)', '').split(/\s*\(.*?KB\)/), function(i, name) {
+                                    if (name !== "")
+                                    files.push('<li class="file_icon"><a href="#" onclick="window.open(\'' + data.links[i] + '\', \'Datei\', \'width=850,height=850\');return false;">' + name + '</a></li>');
+                                });
+                                return '<ul>' + files.join('') + '</ul>';
+                            }
+                            return data;
+                        }
+                    },
+                    { // 13
+                        data: 'photos',
+                        title: 'Bilder',
+                        className: 'dt-left nowrap none',
+                        visible: false,
+                        render: function(data, type, row, meta) {
+                            if (type == 'display') {
+                                if (data.length == 0) return '';
+                                return `<a href="#" data-row="${meta.row}" onclick="openImageDialog(this);return false;">Öffnen</a>`
+                            }
+                            return data;
+                        }
+                    },
+                    { // 14
+                        name: 'id',
+                        data: 'id',
+                        visible: false
+                    },
+                    { // 15
+                        name: 'unableToLocate',
+                        data: 'unableToLocate',
+                        visible: false
+                    }
+
+                ],
+                pageLength: 10
+            };
+            //if (! MOBILE_SCREEN) opt.scrollY = parseInt(height() - $('.user-input').height() - 150);
+
+            const dt = $("#auctions").DataTable(opt);
+            $("#auctions_wrapper").hide();
+
+            $(".dataTable").on("click", "thead th.dtr-control.expand_collapse", function(e) {
+                const icon = $(this);
+                let add = 'expand_all_icon';
+                let remove = 'collapse_all_icon';
+                if (icon.hasClass('expand_all_icon')) {
+                    add = 'collapse_all_icon';
+                    remove = 'expand_all_icon';
+                    $('tr:not(.dt-hasChild.dtr-expanded) td.dtr-control').trigger('click');
+                }
+                else {
+                    $('tr.dt-hasChild.dtr-expanded td.dtr-control').trigger('click');
+                }
+                icon.addClass(add);
+                icon.removeClass(remove);
+            });
+
+            $(".dataTable").on("click", "thead th.save-row", function(e) {
+                if ($('#bookmark-loaded').html() !== '') {
+                    let name = $('#bookmark-loaded').html();
+                    const rowsToSave = {};
+                    const dt = $('#auctions').DataTable();
+                    const rowsLength = dt.rows().indexes().toArray().length;
+                    dt.rows({selected: true}).every(function() {
+                        const rowData = this.data();
+                        const key = Cache.edict_data_create_key(rowData);
+                        rowsToSave[key] = rowData;
+                    });
+                    var dialog = $("#dialog-info");
+                    if (Object.keys(rowsToSave).length === 0) {
+                        Cache.remove_edict_data(name);
+                        dialog.html('Merkliste wurde entfernt.');
+                    }
+                    else if (Object.keys(rowsToSave).length < rowsLength)  {
+                        Cache.edict_data(name, rowsToSave);
+                        dialog.html('Merkliste wurde angepasst.');
+                    }
+                    else return;
+
+                    dialog.dialog("open");
+                    loadEdictFromBookmark();
+                }
+                else if ($('#auctions').DataTable().rows({selected: true}).indexes().toArray().length > 0) {
+                    var dialog = $("#dialog-bookmark");
+                    dialog.dialog("open");
+                    $('div.save-bookmark-section').show();
+                    updateBookmarkSelection();
+                }
+            });
+
+            $("#open-menu").on("click", function(e) {
+                e.stopPropagation();
+                $("#menu").toggle();
+            });
+            $("#open-bookmark-setting").on("click", function(e) {
+                $("#menu").hide();
+                var dialog = $("#dialog-bookmark-setting");
+                dialog.dialog("open");
+            });
+            $("#open-searchprofile-setting").on("click", function(e) {
+                $("#menu").hide();
+                var dialog = $("#dialog-searchprofile-setting");
+                dialog.dialog("open");
+            });
+            $("#oopen-cleardata-setting").on("click", function(e) {
+                $("#menu").hide();
+                var dialog = $("#dialog-cleardata");
+                dialog.dialog("open");
+            });
+            $("#open-info").on("click", function(e) {
+                $("#menu").hide();
+            });
+            $("#close-android-app").on("click", function(e) {
+                $("#menu").hide();
+                AndroidBridge.closeApp();
+            });
+            $("#sun-moon-switch").on("click", function(e) {
+                $(".sun-icon").toggle();
+                $(".moon-icon").toggle();
+
+                if ($(".sun-icon").is(":hidden")) $("html").removeClass("dark");
+                else $("html").addClass("dark");
+                Cache.settings('darkmode', $("html").hasClass("dark"));
+            });
+            
+            $("#extend-query-options").on("click", function(e) {
+                var dialog = $("#dialog-searchsetting");
+                dialog.dialog("open");
+            });
+            $("#select-by-profile").on("click", function(e) {
+                var dialog = $("#dialog-searchprofile");
+                dialog.dialog("open");
+            });
+            $("#save-search-profile").on("click", function(e) {
+                const radius = $('#radius').val();
+                $('#zip_codes').val(Util.postal_code_validate($('#zip_codes').val()));
+                const zip_codes = $('#zip_codes').val().trim().split(/\s+/).join(',');
+                const selected_cities = $('#zip_codes').data("selected_cities");
+                let searchProfileName = $('#search_profile_name').val();
+                if (searchProfileName === '')  searchProfileName = 'search_profile_' + new Date().getTime();
+                $('#search_profile_name').val(searchProfileName);
+
+                let districts = [];
+                $('#federal_states').val().forEach(state => {
+                    let pd = $(`#BL-${state} select`).val();
+                    if (pd.length > 0) districts.push(...pd);
+                })
+                Cache.edict_search(searchProfileName, {
+                    radius: radius,
+                    zip_codes: zip_codes,
+                    cities: selected_cities,
+                    size_of_object_from: $('#size_of_object_from').val(),
+                    size_of_object_to: $('#size_of_object_to').val(),
+                    categories: $('#categories').val(),
+                    edict_types: $('#edict_types').val(),
+                    valuation: $('#valuation').val(),
+                    federal_states: $('#federal_states').val(),
+                    districts: districts
+                });
+                var dialog = $("#dialog-info");
+                dialog.html('Suchprofil wurde gespeichert.');
+                dialog.dialog("open");
+            });
+
+            $('#search-profiles').on('change', function() {
+                const name = $(this).val();
+                const data = Cache.edict_search(name);
+                $('input.searchagent').prop('checked', data.search_agent);
+            });
+
+            $('#bookmark-list').on('change', function() {
+                $('#bookmark-name').val($(this).val())
+            });
+
+            $('#federal_states').on('change', function() {
+                const selected_states = $(this).val();
+                $('.BL').hide();
+                let states = {};
+                if (selected_states) {
+                    selected_states.forEach(state => {
+                        $(`#BL-${state}`).show();
+                        states[state] = 1;
+                    });
+                }
+                for (let state = 0; state <= 8; state++) {
+                    if (!states.hasOwnProperty(state)) {
+                        $(`#BL-${state} select option`).prop('selected', false);
+                    }
+                }
+                resetSelectedCities();
+            });
+
+            $('#searchprofile-list-edit').on('change', 'input.searchagent', function(e) {
+                const name = $(this).closest('div.search-profile').data('searchprofile_name');
+                const rowsToSave = Cache.edict_search(name);
+                rowsToSave.search_agent = $(this)[0].checked;
+                Cache.edict_search(name, rowsToSave);
+            });
+
+            $('input.searchagent').on('change', function(e) {
+                const name = $('#search-profiles').val();
+                if (name !== '') {
+                    const rowsToSave = Cache.edict_search(name);
+                    rowsToSave.search_agent = $(this)[0].checked;
+                    Cache.edict_search(name, rowsToSave);
+                }
+            });
+
+            $('#searchprofile-list-edit').on('click', 'button.searchprofile-edit', function(e) {
+                const name = $(this).closest('div.search-profile').data('searchprofile_name');
+                loadSearchSetting(name);
+                $('#extend-query-options').trigger('click');
+            });
+
+            $('#searchprofile-list-edit').on('click', 'button.searchprofile-delete', function(e) {
+                const name = $(this).closest('div.search-profile').data('searchprofile_name');
+                Cache.remove_edict_search(name);
+                $(this).parent().parent().remove();
+            });
+
+            $('#searchprofile-list-edit').on('click', 'button.searchprofile-change_name', function(e) {
+                const searchProfile = $(this).closest('div.search-profile');
+                const prv_name = searchProfile.data('searchprofile_name');
+                const new_name = $(this).siblings("input").val();
+
+                if (prv_name !== new_name) {
+                    const rowsToSave = Cache.edict_search(prv_name);
+                    Cache.edict_search(new_name, rowsToSave);
+                    Cache.remove_edict_search(prv_name);
+                    searchProfile.data('searchprofile_name', new_name);
+                    var dialog = $("#dialog-info");
+                    dialog.html('Name wurde geändert.');
+                    dialog.dialog("open");
+                }
+            });
+
+            $('#bookmark-list-edit').on('click', 'button.bookmark-edit', function(e) {
+
+            });
+
+        
+            $('#city-list').on('click', 'button.city-delete', function(e) {
+                const cityName = $(this).parent().data('city_name');
+                let selectedCities = $('#zip_codes').data("selected_cities");
+                delete selectedCities[cityName];
+                let zipCodes = {};
+                jQuery.each(selectedCities, function(label, zip_code){
+                    zipCodes[zip_code] = true;
+                });
+                $('#zip_codes').val(Object.keys(zipCodes).join(" "));
+                $('#zip_codes').data("selected_cities", selectedCities);
+                $(this).parent().remove();
+            });
+
+            $('#bookmark-list-edit').on('click', 'button.bookmark-delete', function(e) {
+                const name = $(this).parent().data('bookmark_name');
+                Cache.remove_edict_data(name);
+                if (name === $('#bookmark-loaded').html()) loadEdictFromBookmark();
+                $(this).parent().remove();
+            });
+
+            $('#bookmark-list-edit').on('click', 'button.bookmark-change_name', function(e) {
+                const bookmark = $(this).parent();
+                const prv_name = bookmark.data('bookmark_name');
+                const new_name = $(this).siblings("input").val();
+                if (prv_name !== new_name) {
+                    const rowsToSave = Cache.edict_data(prv_name);
+                    Cache.edict_data(new_name, rowsToSave);
+                    Cache.remove_edict_data(prv_name);
+                    bookmark.data('bookmark_name', new_name);
+                    var dialog = $("#dialog-info");
+                    dialog.html('Name wurde geändert.');
+                    dialog.dialog("open");
+                }
+            });
+
+            $("#save-bookmark").on("click", function(e) {
+                let name = $('#bookmark-name').val();
+                if (name === '') name = 'bookmark_' + new Date().getTime();
+                const rowsToSave = Cache.edict_data().hasOwnProperty(name) ? Cache.edict_data(name) : {};
+                const dt = $('#auctions').DataTable();
+                dt.rows({selected: true}).every(function() {
+                    const rowData = this.data();
+                    const key = Cache.edict_data_create_key(rowData);
+                    rowsToSave[key] = rowData;
+                });
+                if (Object.keys(rowsToSave).length > 0) {
+                    Cache.edict_data(name, rowsToSave);
+                    updateBookmarkSelection();
+                    $('#bookmark-list').val(name);
+                    $('#bookmark-name').val(name);
+                    var dialog = $("#dialog-info");
+                    dialog.html('Merkliste wurde gespeichert.');
+                    dialog.dialog("open");
+                }
+            });
+            
+            $("#zip_codes").on("click", function(e) {
+                var dialog = $("#dialog-cities");
+                dialog.dialog("open");
+                //$('#federal_states').trigger('change')
+
+            });
+            $("#popup-regions").on("click", function(e) {
+                var dialog = $("#dialog-regions");
+                dialog.dialog("open");
+                $('#federal_states').trigger('change')
+
+            });
+            $("#popup-bookmark").on("click", function(e) {
+                if (Object.keys(Cache.edict_data()).length > 0) {
+                    var dialog = $("#dialog-bookmark");
+                    dialog.dialog("open");
+                    $('div.save-bookmark-section').hide();
+                    updateBookmarkSelection();
+                }
+            });
+            $("#reset-dt-filter").on("click", function(e) {
+                const dt = $('#auctions').DataTable();
+                dt.search('');
+                dt.columns().search('').draw();
+            });
+
+            $("#popup-map").on("click", function(e) {
+                var dialog = $("#dialog-map");
+                dialog.html('<div id="map"></div>');
+                dialog.dialog("open");
+                initMap();
+            });
+
+            $("#get-auctions").on("submit", function(e) {
+                e.preventDefault();
+                let url = $(this).attr('action');
+                $('#zip_codes').val(Util.postal_code_validate($('#zip_codes').val()));
+                let zip_codes = $('#zip_codes').val().trim().split(/\s+/);
+                if (zip_codes.length === 1 && zip_codes[0] === "") zip_codes = []
+                let [valuation_from, valuation_to] = $('#valuation').val().split('-');
+                if (typeof valuation_to === "undefined") valuation_to = "";
+                const radius = $('#radius').val();
+                const categories =  $('#categories').val();
+                const edict_types = $('#edict_types').val();
+                let federal_states = [];
+                let districts = [];
+                $('#federal_states').val().forEach(state => {
+                    let pd = $(`#BL-${state} select`).val();
+                    if (pd.length === 0) federal_states.push(state)
+                    else districts.push(...pd);
+                })
+                if (districts.length > 0 && federal_states.length > 0) {
+                    federal_states.forEach(state =>  {
+                        //let pd = $(`#BL-${state} select`).val();
+                        //if (pd.length === 0) {
+                            $(`#BL-${state} select option`).each(function() {
+                                districts.push($(this).val());
+                            })
+                        //}
+                    });
+                    federal_states = [];
+                }
+                let param = {
+                    radius: radius,
+                    categories: categories,
+                    edict_types: edict_types,
+                    valuation_from: valuation_from,
+                    valuation_to: valuation_to,
+                    federal_states: federal_states,
+                    districts: districts,
+                    zip_codes: zip_codes
+                };
+                if (zip_codes.length === 0 && federal_states.length === 0 && districts.length === 0 && Object.keys(GeoLocation.current_location()).length > 0) {
+                    param.latitude = GeoLocation.current_location().lat;
+                    param.longitude = GeoLocation.current_location().lng;
+                }
+                const dt = $("#auctions").DataTable();
+                $(".loading-process").show();
+                $("#auctions_wrapper").show();
+                $.ajax({
+                    headers: {"Accept": "application/json; charset=utf-8"},
+                    url: BASE_URL + url,
+                    type: 'GET',
+                    cache: true,
+                    data: param,
+                    success: function(apiData) {
+                        const rows = processApiData(apiData, COLUMN_FILTER_ENABLED)
+                        dt.clear();
+                        dt.rows.add(rows);
+                        dt.draw();
+
+                        $('#bookmark-loaded').html('');
+                        $('.dtr-control').removeClass('expand_all_icon');
+                        $('.dtr-control').addClass('collapse_all_icon');
+
+                        $(".loading-process").hide();
+                    },
+                    error: function(xhr, textStatus, error) {
+                        $("#loading-process").hide();
+                        console.log("API nicht erreichbar - " + textStatus + ": " + error);
+                    }
+                });
+                //ajaxReqAuctions(url, param);
+            });
+
+            $("#dialog-images").on( "dialogclose", function( e, ui ) {
+                dt.rows().deselect();
+            });
+            $(window).on('resize', function(){
+                dt.columns.adjust().draw('page');
+                if (MOBILE_SCREEN) {
+                    var dialogImg = $("#dialog-images");
+                    dialogImg.dialog("option", "height", height());
+                    dialogImg.dialog("option", "width", width());
+                    var dialogMap = $("#dialog-map");
+                    dialogMap.dialog("option", "height", height());
+                    dialogMap.dialog("option", "width", width());
+                }
+            });
+            Cache.init(function(last_query) {
+                $('#radius').val(last_query.radius);
+                $('#zip_codes').val(last_query.zip_codes);
+                $('#zip_codes').data('selected_cities', last_query.cities);
+                $('#size_of_object_from').val(last_query.size_of_object_from);
+                $('#size_of_object_to').val(last_query.size_of_object_to);
+                $('#categories').val(last_query.categories);
+                $('#edict_types').val(last_query.edict_types);
+                $('#valuation').val(last_query.valuation);
+                $('#federal_states').val(last_query.federal_states);
+                const districts_dict = last_query.districts.reduce((obj, item) => {
+                    obj[item] = true;
+                    return obj;
+                }, {});
+                last_query.federal_states.forEach(state =>  {
+                    let d = [];
+                    $(`#BL-${state} select option`).each(function() {
+                        if (districts_dict.hasOwnProperty($(this).val())) d.push($(this).val());
+                    });
+                    $(`#BL-${state} select`).val(d);
+                });
+                showSelectedRegions();
+                //$('#get-auctions').trigger("submit");
+
+            }, function(settings) {
+                $(".sun-icon").hide();
+                $(".moon-icon").hide();
+                if (settings['darkmode'].data) {
+                    $(".sun-icon").show()
+                    $("html").addClass("dark");
+                }
+                else {
+                    $(".moon-icon").show()
+                    $("html").removeClass("dark")
+                }
+                $('body').show();
+            });
+        //});
+        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+            if (options.cache) {
+                var success = originalOptions.success || $.noop;
+                const url = options.url + '/' + options.data;
+                options.cache = false;
+                if (Cache.edict_data_query().query.hasOwnProperty(url)) {
+                    options.beforeSend = function () {
+                        const cached = Cache.edict_data_query(url);
+                        if (new Date().getTime() > cached.expiry) {
+                            Cache.remove_edict_data_query(url);
+                            return true
+                        }
+                        success(cached.value);
+                        return false;
+                    };
+                }
+                options.success = function (apiData, textStatus) {
+                    if (Object.keys(apiData.data).length) {
+                        let districts = [];
+                        $('#federal_states').val().forEach(state => {
+                            let pd = $(`#BL-${state} select`).val();
+                            if (pd.length > 0) districts.push(...pd);
+                        })
+                        Cache.edict_data_query(url, apiData, {
+                            radius: $('#radius').val(),
+                            zip_codes: $('#zip_codes').val(),
+                            cities: $('#zip_codes').data('selected_cities'),
+                            size_of_object_from: $('#size_of_object_from').val(),
+                            size_of_object_to: $('#size_of_object_to').val(),
+                            categories: $('#categories').val(),
+                            edict_types: $('#edict_types').val(),
+                            valuation: $('#valuation').val(),
+                            federal_states: $('#federal_states').val(),
+                            districts: districts
+                        });
+                    }
+                    success(apiData);
+                };
+            }
+        });
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                GeoLocation.current_location({
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                });
+            }, function(err) {
+                /************************************************
+                 * Fallback - Get GeoLocation from Native Android
+                 ************************************************/
+                if (typeof AndroidBridge !== "undefined") AndroidBridge.geoLocation("Android.geo_location");
+            });
+        } else {
+            /************************************************
+            * Fallback - Get GeoLocation from Native Android
+            ************************************************/
+            if (typeof AndroidBridge !== "undefined") AndroidBridge.geoLocation("Android.geo_location");
+        }
+    });
+
+
+    function processApiData(apiData, state, cachedEdictLeft) {
+
+        /*********************
+         * Filter variables
+         *********************/
+        let size_of_object_from = Util.number($('#size_of_object_from').val());
+        let size_of_object_to = Util.number($('#size_of_object_to').val());
+        let rows = [];
+        if (Object.keys(apiData.data).length > 0) {
+            if (apiData.data.hasOwnProperty('lgv'))
+            apiData.data.lgv.forEach(api_data => {
+                let row = DTColumn.init();
+                row.edict_title = api_data.edict_title;
+                if (row.edict_title === 'Meistbotsverteilung')  row.edict_title = row.edict_title + ' - ' + api_data.col_3;
+                row.adr_and_cat = api_data.col_2;
+                row.detail_link = api_data.detail_link;
+                api_data.details.forEach(detail => {
+                    if (DTColumn.mapping().hasOwnProperty(detail.title)) {
+                        const [column, value] = DTColumn.get_info(detail);
+                        row[column] = value;
+                    }
+                });
+                if (row.adr_and_cat !== '' && !row.adr_and_cat.includes(row.adr)) row.adr = null;
+                if (state === COLUMN_FILTER_ENABLED) {
+                    if (row.size_of_object !== "-" && ((size_of_object_from !== "" && parseFloat(row.size_of_object) < parseInt(size_of_object_from))  ||
+                                                       (size_of_object_to !== "" && parseFloat(row.size_of_object) > parseInt(size_of_object_to))))
+                        return;
+                }
+                row.api_data = api_data;
+                row.edict_entity = 'lgv';
+                if (typeof cachedEdictLeft !== "undefined") {
+                    const cacheKey = Cache.edict_data_create_key(row);
+                    delete cachedEdictLeft[cacheKey]
+                }
+                row.id = row.court.trim() + ' - ' + row.ref_id.trim();
+                rows.push(row);
+            });
+            if (apiData.data.hasOwnProperty('vvi'))
+            apiData.data.vvi.forEach(api_data => {
+                const words = api_data.col_2.split(/\n/);
+                let row = DTColumn.init();
+                row.edict_title = api_data.edict_title;
+                row.adr_and_cat = words[1] + " - " + api_data.col_1;
+                row.detail_link = api_data.detail_link;
+                api_data.details.forEach(detail => {
+                    if (DTColumn.mapping().hasOwnProperty(detail.title)) {
+                        const [column, value] = DTColumn.get_info(detail);
+                        row[column] = value;
+                    }
+                });
+                if (!row.adr_and_cat.includes(row.adr)) row.adr = null;
+                if (state === COLUMN_FILTER_ENABLED) {
+                    if (row.size_of_object !== "-" && ((size_of_object_from !== "" && parseFloat(row.size_of_object) < parseInt(size_of_object_from))  ||
+                                                       (size_of_object_to !== "" && parseFloat(row.size_of_object) > parseInt(size_of_object_to))))
+                        return;
+                }
+
+                row.api_data = api_data;
+                row.edict_entity = 'vvi';
+                if (typeof cachedEdictLeft !== "undefined") {
+                    const cacheKey = Cache.edict_data_create_key(row);
+                    delete cachedEdictLeft[cacheKey]
+                }
+
+                row.id = row.court.trim() + ' - ' + row.ref_id.trim();
+                rows.push(row);
+            });
+        }
+        return rows;
+    }
+
+
+    function addMarker(param) {
+        const markerIcon = L.divIcon({
+            className: 'dummy',
+            html: `<div class="marker-icon ${param.edictTy} ${param.icon === '' ? 'no-inner-icon' : '' }">${param.icon}</div>`,
+            iconAnchor: [15, 35]
+        });
+        const marker = L.marker([param.location.lat, param.location.lon], {
+            rowIdx: param.rowIdx,
+            icon: markerIcon,
+            selected: false
+        });
+        param.markers.addLayer(marker);
+        param.markers.addTo(param.map);
+        param.bounds.extend(marker.getLatLng());
+
+        marker.on('click', function(e) {
+            const marker = e.target;
+            const dt = $("#auctions").DataTable();
+            const rowIdx = marker.options.rowIdx;
+            if (!marker.options.selected) {
+                let columns = [];
+                dt.columns().every(function (i) {
+                    const dtCol = dt.settings()[0].aoColumns[i];
+                    const rdata = dt.cell(rowIdx, i).render('display');
+                    if (typeof dtCol.data !== "undefined" && rdata !== '' && rdata !== '-' && dt.column(i).visible()) {
+                        columns.push({
+                            className: dtCol.sClass,
+                            columnIndex: i,
+                            data: rdata,
+                            hidden: true,
+                            rowIndex: rowIdx,
+                            title: dt.column(i).title()
+                        });
+                    }
+                });
+                $('.details').html(dt.showResponsiveContent(rowIdx, columns, 'map_marker'));
+                $('.details').show();
+                $('.details').width($('#map').width() - 16);
+
+                deselectAllMarkers(param.markers);
+                selectMarker(marker);
+                adjustMapView(param.map, marker);
+            }
+            else {
+                deselectMarker(marker);
+                $('.details').hide();
+            }
+        });
+
+    }
+    async function initMap() {
+        const dt = $("#auctions").DataTable();
+        const map = L.map('map').setView([47.59397, 14.12456], 5); // Default center Austria
+
+        const osmLayer = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom:19
+        }).addTo(map);
+
+        const esriWorldImageryLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: '&copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community',
+            maxZoom:19
+        });
+
+        // Create a layer control and add it to the map
+        const baseMaps = {
+            "Default": osmLayer,
+            "Satellite": esriWorldImageryLayer
+        };
+        L.control.layers(baseMaps).addTo(map);
+
+        // Create detail control
+        const detailsControl = L.control({position: 'bottomright'});
+        detailsControl.onAdd = function(map) {
+            var div = L.DomUtil.create('div', 'details');
+            // Prevent clicks on the control from affecting the map
+            L.DomEvent.on(div, 'mousedown dblclick', L.DomEvent.stopPropagation)
+                      .on(div, 'click', L.DomEvent.stopPropagation)
+                      .on(div, 'mousemove', L.DomEvent.stopPropagation)
+                      .on(div, 'mousewheel', L.DomEvent.stopPropagation)
+                      .on(div, 'touchstart', L.DomEvent.stopPropagation)
+                      .on(div, 'pointerdown', L.DomEvent.stopPropagation)
+                      .on(div, 'pointermove', L.DomEvent.stopPropagation);
+
+            div.style.display = 'none';
+            return div;
+        };
+        //4974 Ort im Innkreis, Am Mühlbach 24
+        detailsControl.addTo(map);
+        const noticeControl = L.control({position: 'topleft'});
+        noticeControl.onAdd = function(map) {
+            var div = L.DomUtil.create('div', 'notice');
+            // Prevent clicks on the control from affecting the map
+            L.DomEvent.on(div, 'mousedown dblclick', L.DomEvent.stopPropagation)
+                      .on(div, 'click', L.DomEvent.stopPropagation)
+                      .on(div, 'mousemove', L.DomEvent.stopPropagation)
+                      .on(div, 'mousewheel', L.DomEvent.stopPropagation)
+                      .on(div, 'touchstart', L.DomEvent.stopPropagation)
+                      .on(div, 'pointerdown', L.DomEvent.stopPropagation)
+                      .on(div, 'pointermove', L.DomEvent.stopPropagation);
+            div.style.display = 'none';
+            div.innerHTML = '<div>Hinweis: Nicht alle <a href="#" onclick="showObjectsUnableToLocate();return false;">Liegenschaften</a> werden angezeigt.</div>';
+            return div;
+        };
+        noticeControl.addTo(map);
+        $(".notice").insertBefore(".leaflet-control-zoom");
+
+
+        // Create a marker cluster group
+        const markers = L.markerClusterGroup();
+        const bounds = L.latLngBounds();
+
+        const promises = dt.rows({ search: 'applied' })[0].map((rowIdx) => {
+            const data = dt.row(rowIdx).data();
+            const edictTy = DTColumn.edict_type(data.edict_title);
+            const icon = DTColumn.get_category_icon(data);
+            let adr = data.town;
+            let noStreetAvailable = false;
+            if (data.adr === null) {
+                adr = DTColumn.remove_categories(data.adr_and_cat);
+                adr = adr.replace(/\s+ident\s+.*$/, '');
+                adr = adr.replace(/\s*,.*$/i, '');
+                const regex = new RegExp(/^\d{4}\s+.+\d.*$/);
+                if (!regex.test(adr)) noStreetAvailable = true
+            }
+            else if (typeof adr === "undefined") {
+                adr = data.adr;
+            }
+            else {
+                const [streetNme, streetNbr, streetNbrApndx, streetNbrTo, streetNbrToApndx, buildingRef] = Util.normalize_adr(data.adr);
+                adr = `${adr}, ${streetNme} ${streetNbr}${streetNbrApndx}`;
+                if (streetNbrTo !== '') {
+                    adr = `${adr}-${streetNbrTo}`;
+                    if (streetNbrToApndx !== '') adr = `${adr}${streetNbrToApndx}`;
+                }
+                if (buildingRef !== '') adr = `${adr}/${buildingRef}`;
+            }
+            return new Promise((resolve, reject) => {
+                if (typeof adr === "undefined") {// || (edictTy !== 'auction' && edictTy !== 'other')) {
+                    resolve();
+                }
+                else {
+                    adr = adr.trim();
+                    GeoLocation.storage().get_coordinates(adr, function(location) {
+                        const data = {
+                            map: map,
+                            markers: markers,
+                            icon: icon,
+                            rowIdx: rowIdx,
+                            bounds: bounds,
+                            edictTy: edictTy,
+                            adr:adr,
+                            location: location,
+                            noStreetAvailable: noStreetAvailable
+                        };
+                        if (Object.keys(location).length > 0) addMarker(data);
+                        resolve(data);
+                    });
+                }
+            });
+        });
+        map.on('click', function(e) {
+            deselectAllMarkers(markers);
+            $('.details').hide();
+
+        });
+        let result = await Promise.all(promises);
+        let unableToLocate = [];
+        for (const data of result) {
+            if (typeof data !== "undefined" && Object.keys(data.location).length == 0) {
+                let rowData = dt.row(data.rowIdx).data();
+                if (rowData.unableToLocate === null) {
+                    let fnGetCoordinates = GeoLocation.get_coordinates;
+                    if (data.noStreetAvailable) fnGetCoordinates = GeoLocation.cities().get_coordinates_with_cb;
+                    await fnGetCoordinates(data.adr, function(location) {
+                        if (Object.keys(location).length == 0) {
+                            unableToLocate.push(data.rowIdx);
+                            rowData.unableToLocate = true;
+                            dt.row(data.rowIdx).data(rowData);
+                            console.error(`No coordinates found for address: ${data.adr}`);
+                            return;
+                        }
+                        GeoLocation.storage().add_coordinates(data.adr, location);
+                        data.location = location;
+                        addMarker(data);
+                    });
+                }
+                else if (rowData.unableToLocate) {
+                    unableToLocate.push(data.rowIdx);
+                }
+            }
+        }
+        if (unableToLocate.length > 0) {
+            /*unableToLocate.forEach(function(rowIdx) {
+                let data = dt.row(rowIdx).data();
+                data.unableToLocate = true;
+                dt.row(rowIdx).data(data);
+            });*/
+            $('.notice').show();
+        }
+        map.fitBounds(bounds);
+    }
+
+    function selectMarker(m) {
+        let icon = m.getIcon();
+        let el = $(icon.options.html)[0];
+        el.classList.add("marker-selected");
+        icon.options.html = el.outerHTML;
+        m.setIcon(icon);
+        m.options.selected = true;
+    }
+    function deselectMarker(m) {
+        let icon = m.getIcon();
+        let el = $(icon.options.html)[0];
+        el.classList.remove("marker-selected");
+        icon.options.html = el.outerHTML;
+        m.setIcon(icon);
+        m.options.selected = false;
+    }
+    function deselectAllMarkers(markers) {
+        markers.eachLayer(m => {
+            if (m instanceof L.Marker) {
+                deselectMarker(m);
+            }
+        });
+    }
+    function showStoredEntries() {
+        const [search, bookmarks, queries] = [ 
+            Object.keys(Cache.edict_search()).length, 
+            Object.keys(Cache.edict_data()).length,
+            Object.keys(Cache.edict_data_query().query).length
+        ];
+        $('#setting-entries').html(`(${search+bookmarks})`);
+        $('#cache-entries').html(`(${queries})`);
+        GeoLocation.storage().get_all(function(geodata) {
+            $('#geodata-entries').html(`(${geodata.length})`);
+        }); 
+    }
+    function resetSelectedRegions() {
+        $("#federal_states option").prop('selected', false);
+        $(".BL select option").prop('selected', false);
+        $('.BL').hide();
+        $('#popup-regions').html('Bitte auswählen ...')
+    }
+    function resetSelectedCities() {
+        $('#zip_codes').data('selected_cities', {});
+        $('#zip_codes').val('');
+    }
+    function showSelectedCities() {
+        const cityList = $('#city-list');
+        cityList.html('');
+        Object.keys($('#zip_codes').data('selected_cities')).forEach(function(name){
+            cityList.append($('<div>', {
+                html:  `<span style="width:100%">${name}</span>
+                        <button class="ui-icon-btn ui-entry ui-button clickable city-delete" type="button">
+                            <i class="fa-regular fa-trash-can fa-btn-icon"></i>
+                        </button>`,
+                class: 'aligned separator',
+                'data-city_name': name
+            }));
+        });
+        resetSelectedRegions();
+    }
+    function showSelectedRegions() {
+        let federal_states = [];
+        let districts = [];
+        $('#federal_states').val().forEach(state => {
+            const stateText = $(`#federal_states option[value="${state}"]`).text();
+            let pds = $(`#BL-${state} select`).val();
+            if (pds.length === 0) { 
+                federal_states.push({ 
+                    value: state, 
+                    text: stateText
+                }) 
+            }
+            else {
+                pds.forEach(pd => {
+                    const pdText = $(`#BL-${state} select option[value="${pd}"]`).text();
+                    districts.push(pdText);
+                });
+            } 
+        })
+        if (districts.length > 0 && federal_states.length > 0) {
+            federal_states.forEach(oState =>  {
+                $(`#BL-${oState.value} select option`).each(function() {
+                    districts.push($(this).text());
+                })
+            });
+            federal_states = [];
+        }
+        let selectedRegions = [];
+        federal_states.forEach(oState => {
+            selectedRegions.push(oState.text)
+        });
+        districts.forEach(pdTxt => {
+            selectedRegions.push(pdTxt)
+        });
+        if (selectedRegions.length > 0) $('#popup-regions').html(selectedRegions.join(", "))
+        else $('#popup-regions').html('Bitte auswählen ...')
+    }
+    function loadEdictFromBookmark() {
+        $('#bookmark-loaded').html('');
+        const dt = $('#auctions').DataTable();
+        const name = $('#bookmark-list').val();
+        if (name === '') return;
+        $("#auctions_wrapper").show();
+        let cachedEdictData = Cache.edict_data().hasOwnProperty(name) ? Cache.edict_data()[name] : {};
+        if (Object.keys(cachedEdictData).length === 0) {
+            dt.clear();
+            dt.draw();
+
+            $('#bookmark-loaded').html('');
+            $('.dtr-control').removeClass('expand_all_icon');
+            $('.dtr-control').addClass('collapse_all_icon');
+            return;
+        };
+        delete cachedEdictData['key'];
+        $(".loading-process").show();
+
+        let postData = { data: {'lgv':[], 'vvi': []} };
+        for (let [key, rowData] of Object.entries(cachedEdictData)) {
+            let cRowData = structuredClone(rowData);
+            // Reset details
+            cRowData.api_data.details = [];
+            postData.data[cRowData.edict_entity].push(cRowData.api_data);
+
+        }
+        $.ajax({
+            headers: {"Accept": "application/json; charset=utf-8"},
+            url: BASE_URL +  "/edict/auction_details",
+            type: 'POST',
+            cache: true,
+            data: JSON.stringify(postData),
+            contentType: "application/json; charset=utf-8",
+            success: function(apiData) {
+                let rows = processApiData(apiData, COLUMN_FILTER_DISABLED, cachedEdictData);
+                if (Object.keys(cachedEdictData).length > 0) {
+                    let postDataQueryByRefIds = { data: {'lgv':[], 'vvi': []} };
+                    for (let [key, rowData] of Object.entries(cachedEdictData)) {
+                        const regex_court = /\((\d{3})\)/;
+                        const regex_refId = /^(\d+)\s+(\w)\s+(\d+)\/(\d+)/;
+                        const court_nbr = regex_court.exec(rowData.court)[1];
+                        let [ref_id, ref_ga, ref_gz, ref_nbr, ref_year] = regex_refId.exec(rowData.ref_id);
+
+                        postDataQueryByRefIds.data[rowData.edict_entity].push({
+                            ref_court_nbr: Util.zero_pad(court_nbr, 3),
+                            ref_ga: Util.zero_pad(ref_ga, 3),
+                            ref_gz: ref_gz,
+                            ref_nbr: Util.zero_pad(ref_nbr, 5),
+                            ref_year: '20' + ref_year,
+                        });
+                    }
+                    $.ajax({
+                        headers: {"Accept": "application/json; charset=utf-8"},
+                        url: BASE_URL + "/edict/auctions_by_refids",
+                        type: 'POST',
+                        cache: true,
+                        data: JSON.stringify(postDataQueryByRefIds),
+                        contentType: "application/json; charset=utf-8",
+                        success: function(apiData) {
+                            const addit_rows = processApiData(apiData, COLUMN_FILTER_DISABLED);
+                            dt.clear();
+                            dt.rows.add(rows.concat(addit_rows)).select();
+                            dt.draw();
+
+                            $('#bookmark-loaded').html(name);
+                            $('.dtr-control').removeClass('expand_all_icon');
+                            $('.dtr-control').addClass('collapse_all_icon');
+                            $(".loading-process").hide();
+                        },
+                        error: function(xhr, textStatus, error) {
+                            $(".loading-process").hide();
+                            console.log("API nicht erreichbar - " + textStatus + ": " + error);
+                        }
+                    });
+                }
+                else {
+                    dt.clear();
+                    dt.rows.add(rows).select();
+                    dt.draw();
+
+                    $('#bookmark-loaded').html(name);
+                    $('.dtr-control').removeClass('expand_all_icon');
+                    $('.dtr-control').addClass('collapse_all_icon');
+                    $(".loading-process").hide();
+                }
+            },
+            error: function(xhr, textStatus, error) {
+                $(".loading-process").hide();
+                console.log("API nicht erreichbar - " + textStatus + ": " + error);
+            }
+        });
+    }
+    function adjustMapView(map, marker) {
+        let controlHeight = $('.details').height();
+
+        var markerLatLng = marker.getLatLng();
+        var markerPoint = map.latLngToContainerPoint(markerLatLng);
+
+        var mapSize = map.getSize();
+        const offsetY = (mapSize.y / 2) - controlHeight - 65;
+
+        // Adjust the marker's point to consider the offset
+        const newPoint = L.point(markerPoint.x, markerPoint.y - offsetY);
+
+        // Convert the new point back to lat/lng
+        const newLatLng = map.containerPointToLatLng(newPoint);
+
+        // Set the new center of the map
+        map.setView(newLatLng, map.getZoom(), { animate: true });
+    }
+    function showObjectsUnableToLocate() {
+        $("#dialog-map").dialog("close");
+        const dt = $("#auctions").DataTable();
+        dt.column('unableToLocate:name').search(true).draw();
+
+    }
+    function openImageDialog(el) {
+        const row_idx = $(el).data('row');
+        const dt = $("#auctions").DataTable();
+
+        const data = dt.row(row_idx).data();
+        const d_valuation = dt.cell(row_idx, 'valuation:name').render('display');
+        const d_size_of_object = dt.cell(row_idx, 'size_of_object:name').render('display');
+
+        var dialogImg = $("#dialog-images");
+        const dialog_h = dialogImg.dialog("option", "height");
+        const dialog_w = dialogImg.dialog("option", "width");
+
+        //const imgContainer_h = parseInt(0.8829 * dialog_h) + 'px';
+        //const img_max_w = parseInt(0.9358 * dialog_w) + 'px';
+
+        const imgContainer_h = '93.3%';
+        const img_max_w = '99.5%';
+
+        let html = [ ];
+        data.photos.forEach(link => {
+            html.push(`<a href="#" onclick="window.open('${link}', 'Foto (Edikt)', 'width=${dialog_w},height=${dialog_h}');return false;"><img style="max-width: ${img_max_w}" src="${link}"></a>`);
+        });
+        data.plans.forEach(link => {
+            html.push(`<a href="#" onclick="window.open('${link}', 'Grundriss (Edikt)', 'width=${dialog_w},height=${dialog_h}');return false;"><img style="max-width: ${img_max_w}" src="${link}"></a>`);
+        });
+        data.addit_plans.forEach(link => {
+            html.push(`<a href="#" onclick="window.open('${link}', 'Lageplan (Edikt)', 'width=${dialog_w},height=${dialog_h}');return false;"><img style="max-width: ${img_max_w}" src="${link}"></a>`);
+        });
+        dialogImg.html(
+            `<p style="margin-top:2px; margin-bottom:5px;"><b>${data.edict_title}</b><br>Schätzwert: ${d_valuation} - Objektgröße: ${d_size_of_object}</p>
+                <div class="img_dialog_container" style="height: ${imgContainer_h}">${html.join("")}</div>`
+        );
+
+        dialogImg.dialog('option', 'title', data.adr_and_cat);
+        dialogImg.dialog("open");
+    }
+
+    function selectEdictAndCloseMap(row_idx) {
+        $("#dialog-map").dialog('close');
+
+        const dt = $("#auctions").DataTable();
+        dt.rows().deselect();
+        dt.row(row_idx).select();
+        const page_info = dt.page.info();
+        const row_position = dt.rows({ search: 'applied' })[0].indexOf(row_idx);
+        if ((row_position >= page_info.start && row_position < page_info.end) || row_position < 0) {}
+        else {
+            const page_to_display = Math.floor(row_position / dt.page.len());
+            dt.page(page_to_display).draw(false);
+        }
+        const rowEl = dt.row(row_idx).node();
+        $(dt.table().node()).animate({
+            scrollTop: $(rowEl).position().top
+        }, 400);
+
+    }
+    function loadSearchSetting(name) {
+        const edictSearchProfile = Cache.edict_search(name);
+        $('#search_profile_name').val(name);
+        $('#radius').val(edictSearchProfile.radius);
+        $('#zip_codes').val(edictSearchProfile.zip_codes);
+        $('#zip_codes').data('selected_cities', edictSearchProfile.cities);
+        $('#size_of_object_from').val(edictSearchProfile.size_of_object_from);
+        $('#size_of_object_to').val(edictSearchProfile.size_of_object_to);
+        $('#categories').val(edictSearchProfile.categories);
+        $('#edict_types').val(edictSearchProfile.edict_types);
+        $('#valuation').val(edictSearchProfile.valuation);
+        $('#federal_states').val(edictSearchProfile.federal_states);
+        const districts_dict = edictSearchProfile.districts.reduce((obj, item) => {
+            obj[item] = true;
+            return obj;
+        }, {});
+        edictSearchProfile.federal_states.forEach(state =>  {
+            let d = [];
+            $(`#BL-${state} select option`).each(function() {
+                if (districts_dict.hasOwnProperty($(this).val())) d.push($(this).val());
+            });
+            $(`#BL-${state} select`).val(d);
+        });
+        showSelectedRegions();
+    }
+    function updateSearchProfileSelection(dialog) {
+        const searchProfileSelect = $('#search-profiles');
+        searchProfileSelect.html('');
+        Object.keys(Cache.edict_search()).forEach(function(name){
+            searchProfileSelect.append($('<option>', {
+                value: name,
+                text: name
+            }));
+        });
+        const name = searchProfileSelect.val();
+        if (name === null) {
+            $('input.searchagent').prop('checked', false);
+            $(dialog).dialog("close");
+        }
+        else {
+            const data = Cache.edict_search(name);
+            $('input.searchagent').prop('checked', data.search_agent);
+        }
+    }
+
+    function updateBookmarkSelection() {
+        const bookmarkList = $('#bookmark-list');
+        bookmarkList.html('');
+        if (!$('div.save-bookmark-section').is(":hidden"))
+        bookmarkList.append($('<option>', {
+                value: '',
+                text: '- Keine Auswahl -'
+        }));
+        Object.keys(Cache.edict_data()).forEach(function(name){
+            bookmarkList.append($('<option>', {
+                value: name,
+                text: name
+            }));
+        });
+    }
+
+    function width() {
+        let width = (window.innerWidth) ?
+            window.innerWidth :
+            document.documentElement.clientWidth || document.body.clientWidth || 0;
+        return width - 5;
+    }
+
+    function height() {
+        return (window.innerHeight) ?
+            window.innerHeight :
+            document.documentElement.clientHeight || document.body.clientHeight || 0;
+    }
+
+
+</script>
+<div class="user-input aligned left" style="padding-top: 3px; padding-left:5px;">
+    <button class="ui-icon-btn ui-entry ui-button clickable" style="margin-left:0px" type="button" id="open-menu">
+        <span class="menu_icon"></span>
+    </button>
+    <!--
+    <button class="ui-icon-btn ui-entry ui-button clickable" style="margin-left:0px" type="button" id="sun-moon-switch">
+        <span style="display:none" class="sun_icon"></span>
+        <i style="display:none" class="fa-solid fa-moon"></i>
+        <span style="display:none" class="moon_icon"></span>
+    </button>
+    -->
+</div>
+<div class="clear separator"></div>
+<div class="content">
+    <div class="user-input">
+        <form id="get-auctions" action="/edict/auctions">
+            <div class="user-input aligned left" style="width:100%; max-width:35.7em">
+                <input placeholder="&#9737;" id="suggest-cities-by-geolocation" class="clickable ui-entry ui-input ui-input-prefix ui-input-prefix-target no-border-right-radius" style="height: 1.46em !important; border-right: 0 !important;" readonly>
+                <input placeholder="PLZ/Ort eingeben ..." class="width-100 no-border-left-radius ui-entry ui-input" type="text" id="suggest-cities">
+                <button class="ui-icon-btn ui-entry ui-button clickable" type="submit" data-url="/edict/auctions">
+                    <i class="fa-solid fa-magnifying-glass fa-rotate-90 fa-search-icon"></i>
+                </button>
+                <button class="ui-icon-btn ui-entry ui-button clickable" style="margin-left:0px" type="button" id="extend-query-options">
+                    <!--<i class="fa-solid fa-filter"></i>-->
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+            </div>
+            <div class="clear"></div>
+            
+        </form>
+    </div>
+    <div class="user-input">
+        <button class="ui-entry ui-button clickable" type="button" id="popup-bookmark">Merkliste</button>
+        <button class="ui-entry ui-button clickable" type="button" id="popup-map">Kartenansicht</button>
+        <!--<button class="ui-entry ui-button clickable" type="button" id="export-list">Exportieren</button>-->
+        <button class="ui-entry ui-button clickable" type="button" id="reset-dt-filter">Filter zurücksetzen</button>
+    </div>
+    <div class="bookmark-loaded-section"><span id="bookmark-loaded"></span></div>
+    <table id="auctions" class="" style="width:100%"></table>
+</div>
+
+<div class="overlay loading-process" style="display:none"></div>
+<div class="loading-process loading-process-container" style="display:none">
+    <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+</div>
+
+<!-- DIALOG jquery-ui -->
+
+<div id="dialog-cleardata">
+    <label class="checkbox clickable aligned">
+        <span class="fa-ui-icon-2">
+            <i class="fa-solid fa-location-dot"></i>
+        </span>
+        <span style="text-align: left; margin-right:5px;">Geodaten</span>
+        <span style="font-size: 10px; color:gray;" class="width-100" id="geodata-entries"></span>
+        <input type="checkbox" name="cleargeodata" class="cleargeodata">
+    </label>
+    <div class="separator"></div>
+    <label class="checkbox clickable aligned">
+        <span class="fa-ui-icon-2">
+            <i class="fa-solid fa-database"></i>
+        </span>
+        <span style="text-align: left; margin-right:5px;">Cache</span>
+        <span style="font-size: 10px; color:gray;" class="width-100" id="cache-entries"></span>
+        <input type="checkbox" name="clearcache" class="clearcache">
+    </label>
+    <div class="separator"></div>
+    <label class="checkbox clickable aligned">
+        <span class="fa-ui-icon-2">
+            <i class="fa-solid fa-gear"></i>
+        </span>
+        <span style="text-align: left; margin-right:5px;">Einstellungen</span>
+        <span style="font-size: 10px; color:gray;" class="width-100" id="setting-entries"></span>
+        <input type="checkbox" name="clearsetting" class="clearsetting">
+    </label>
+
+</div>
+<div id="dialog-images" ></div>
+<div id="dialog-map" ></div>
+<div id="dialog-info" ></div>
+<div id="dialog-searchprofile" >
+    <div class="user-input">
+        <select style="width:100%" class="ui-entry ui-input" id="search-profiles"></select>
+        <div class="separator"></div>
+        <div class="right">
+            <label class="ui-entry ui-button checkbox clickable" ><input type="checkbox" name="searchagent" class="searchagent"> Suchagent</label>
+        </div>
+    </div>
+</div>
+<div id="dialog-searchsetting">
+    <div class="modal-content user-input">
+        <div class="aligned" style="margin-bottom: 0px">
+            <span class="title">Ortssuche</span>
+            <input readonly data-selected_cities="{}" class="width-100 ui-entry ui-input clickable" type="text" minlength="4" placeholder="Bitte auswählen ..." oninput="this.value=Util.postal_code_validate(this.value)" id="zip_codes" name="zip_codes">
+            <input placeholder="km" style="width: 4.1em" min="0" max="575" title="Reichweite (km)" class="ui-entry ui-input" type="number" oninvalid="setCustomValidity(INPUT_RADIUS_MESSAGE)" oninput="setCustomValidity('')" value="" id="radius" name="radius">
+        </div>
+        <span style="font-size:12px;color:gray;">oder</span>
+        <div class="aligned">
+            <span class="title">Region</span>
+            <button class="width-100 ui-entry ui-button clickable" type="button" id="popup-regions">Bitte auswählen ...</button>
+        </div>
+        <div class="separator" style="margin-bottom:10px"></div>
+        <div class="aligned">
+            <span class="title">Ediktstyp</span>
+            <select class="width-100 ui-entry-2 ui-input" multiple size="2" id="edict_types">
+                <option value="lgv">Liegenschaftsversteigerungen</option>
+                <option value="vvi">Veräußerung von Liegenschaften</option>
+            </select>
+        </div>
+        <div class="aligned">
+            <span class="title">Kategorie</span>
+            <select class="width-100 ui-entry-2 ui-input" multiple size="12" id="categories">
+                <option value="EH">Einfamilienhaus</option>
+                <option value="ZH">Zweifamilienhaus</option>
+                <option value="MH">Mehrfamilienhaus</option>
+                <option value="MW">Mietwohnhaus</option>
+                <option value="MSH">Mietshaus</option>
+                <option value="GGH">Gemischt genutztes Haus</option>
+                <option value="RH">Reihenhaus</option>
+                <option value="HAN">Hausanteil</option>
+                <option value="WE">Wohnungseigentumsobjekt</option>
+                <option value="EW">Eigentumswohnung</option>
+                <option value="MAI">Maisonette</option>
+                <option value="DTW">Dachterrassenwohnung</option>
+                <option value="DGW">Dachgeschoßwohnung</option>
+                <option value="GA">Garconniere</option>
+                <option value="GW">Gartenwohnung</option>
+                <option value="UL">Unbebaute Liegenschaft</option>
+                <option value="BBL">Bebaubare Liegenschaft</option>
+                <option value="LF">Land- und Forstwirtschaft</option>
+                <option value="GL">Gewerbliche Liegenschaft</option>
+                <option value="SE">Superädifikat</option>
+                <option value="BR">Baurecht</option>
+                <option value="SO">Sonstiges</option>
+            </select>
+        </div>
+        <div class="aligned">
+            <span class="title">Schätzwert</span>
+            <input placeholder="€" class="ui-entry ui-input ui-input-prefix no-border-right-radius" style="border-right: 0 !important;" readonly>
+            <select class="width-100 ui-entry ui-input no-border-left-radius" id="valuation">
+                <option value="">- Keine Auswahl -</option>
+                <option value="-75000">bis 75.000</option>
+                <option value="-150000">bis 150.000</option>
+                <option value="-300000">bis 300.000</option>
+                <option value="-500000">bis 500.000</option>
+                <option value="75000-150000">75.000 - 150.000</option>
+                <option value="150000-300000">150.000 - 300.000</option>
+                <option value="300000-500000">300.000 - 500.000</option>
+                <option value="500000-1000000">500.000 - 1.000.000</option>
+                <option value="1000000-">über 1.000.000</option>
+            </select>
+        </div>
+        <div class="aligned">
+            <span class="title">Objektgröße</span>
+            <input placeholder="m²" class="ui-entry ui-input ui-input-prefix no-border-right-radius" style="border-right: 0 !important;" readonly>
+            <input id="size_of_object_from" placeholder="von" class="width-100 ui-entry ui-input no-border-left-radius" type="number">
+            <input placeholder="m²" class="ui-entry ui-input ui-input-prefix no-border-right-radius" style="border-right: 0 !important;" readonly>
+            <input id="size_of_object_to"  placeholder="bis" class="width-100 ui-entry ui-input no-border-left-radius" type="number">
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="aligned user-input separator-top" style="margin-right: 1em;">
+            <input class="width-100 ui-entry ui-input" id="search_profile_name" placeholder="Name des Suchprofils" type="text" maxlength="40">
+            <button class="ui-icon-btn ui-entry ui-button clickable" type="button" id="save-search-profile">
+                <i class="fa-solid fa-floppy-disk fa-btn-icon"></i>
+            </button>
+            <button class="ui-icon-btn ui-entry ui-button clickable" type="button" id="select-by-profile">
+                <i class="fa-solid fa-magnifying-glass-plus fa-btn-icon"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div id="dialog-bookmark-setting" >
+    <div id="bookmark-list-edit" class="user-input"></div>
+</div>
+<div id="dialog-searchprofile-setting" >
+    <div id="searchprofile-list-edit" class="user-input"></div>
+</div>
+<div id="dialog-bookmark" >
+    <div class="user-input">
+        <select style="width:100%" class="ui-entry ui-input" id="bookmark-list"></select>
+        <div class="save-bookmark-section">
+            <div class="separator"></div>
+            <div class="aligned">
+                <input class="ui-entry ui-input" style="width:100%" id="bookmark-name" placeholder="Name eingeben" type="text" maxlength="40">
+                <button class="ui-icon-btn ui-entry ui-button clickable" type="button" id="save-bookmark">
+                    <i class="fa-solid fa-floppy-disk fa-btn-icon"></i>
+                </button>
+                <button class="ui-icon-btn ui-entry ui-button clickable" type="button" id="edit-bookmark">
+                    <i class="fa-solid fa-pen-to-square fa-btn-icon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog-cities">
+    <div class="user-input"><input placeholder="PLZ/Ort eingeben ..." class="width-100 ui-entry ui-input" type="text" id="suggest-cities-2"></div>
+    <div class="separator"></div>
+    <div id="city-list" class="user-input"></div>
+</div>
+<div id="dialog-regions" >
+    <div class="user-input">
+        <div class="aligned">
+            <span class="bold-font title-2">Bundesland</span>
+            <select class="width-100 ui-entry-2 ui-input" multiple size="4" id="federal_states">
+                <option value="0">Wien</option>
+                <option value="1">Niederösterreich</option>
+                <option value="2">Burgenland</option>
+                <option value="3">Oberösterreich</option>
+                <option value="4">Salzburg</option>
+                <option value="5">Steiermark</option>
+                <option value="6">Kärnten</option>
+                <option value="7">Tirol</option>
+                <option value="8">Vorarlberg</option>
+            </select>
+        </div>
+        <div class="separator"></div>
+        <div id="BL-0" class="aligned BL">
+            <span class="title-2">Wien</span>
+            <select class="width-100 ui-entry-2 ui-input" multiple size="4">
+                <option value="901">Wien 1 - Innere Stadt          </option>
+                <option value="902">Wien 2 - Leopoldstadt          </option>
+                <option value="903">Wien 3 - Landstraße            </option>
+                <option value="904">Wien 4 - Wienieden             </option>
+                <option value="905">Wien 5 - Margareten            </option>
+                <option value="906">Wien 6 - Mariahilf             </option>
+                <option value="907">Wien 7 - Neubau                </option>
+                <option value="908">Wien 8 - Josefstadt            </option>
+                <option value="909">Wien 9 - Alsergrund            </option>
+                <option value="910">Wien 10 - Favoriten            </option>
+                <option value="911">Wien 11 - Simmering            </option>
+                <option value="912">Wien 12 - Meidling             </option>
+                <option value="913">Wien 13 - Hietzing             </option>
+                <option value="914">Wien 14 - Penzing              </option>
+                <option value="915">Wien 15 - Rudolfsheim-Fünfhaus </option>
+                <option value="916">Wien 16 - Ottakring            </option>
+                <option value="917">Wien 17 - Hernals              </option>
+                <option value="918">Wien 18 - Wienähring           </option>
+                <option value="919">Wien 19 - Döbling              </option>
+                <option value="920">Wien 20 - Brigittenau          </option>
+                <option value="921">Wien 21 - Floridsdorf          </option>
+                <option value="922">Wien 22 - Donaustadt           </option>
+                <option value="923">Wien 23 - Liesing              </option>
+            </select>
+        </div>
+        <div id="BL-1" class="aligned BL">
+            <span class="title-2">Niederösterreich</span>
+            <select class="width-100 ui-entry-2 ui-input" multiple size="4">
+                <option value="301">Krems an der Donau (Stadt)</option>
+                <option value="302">Sankt Pölten (Stadt)</option>
+                <option value="303">Waidhofen an der Ybbs (Stadt)</option>
+                <option value="304">Wer Neustadt (Stadt)</option>
+                <option value="305">Amstetten</option>
+                <option value="306">Baden</option>
+                <option value="307">Bruck an der Leitha</option>
+                <option value="308">Gänserndorf</option>
+                <option value="309">Gmünd</option>
+                <option value="310">Hollabrunn</option>
+                <option value="311">Horn</option>
+                <option value="312">Korneuburg</option>
+                <option value="313">Krems (Land)</option>
+                <option value="314">Lilienfeld</option>
+                <option value="315">Melk</option>
+                <option value="316">Mistelbach</option>
+                <option value="317">Mödling</option>
+                <option value="318">Neunkirchen</option>
+                <option value="319">Sankt Pölten (Land)</option>
+                <option value="320">Scheibbs</option>
+                <option value="321">Tulln</option>
+                <option value="322">Waidhofen an der Thaya</option>
+                <option value="323">Wer Neustadt (Land)</option>
+                <option value="325">Zwettl</option>
+            </select>
+        </div>
+        <div id="BL-2" class="aligned BL">
+            <span class="title-2">Burgenland</span>
+            <select class="width-100 ui-entry-2 ui-input" multiple size="4">
+                <option value="101">Eisenstadt (Stadt)</option>
+                <option value="102">Rust (Stadt)</option>
+                <option value="103">Eisenstadt-Umgebung</option>
+                <option value="104">Güssing</option>
+                <option value="105">Jennersdorf</option>
+                <option value="106">Mattersburg</option>
+                <option value="107">Neusiedl am See</option>
+                <option value="108">Oberpullendorf</option>
+                <option value="109">Oberwart</option>
+            </select>
+        </div>
+        <div id="BL-3" class="aligned BL">
+            <span class="title-2">Oberösterreich</span>
+            <select class="width-100 ui-entry-2 ui-input" multiple size="4">
+                <option value="401">Stadt Linz      </option>
+                <option value="402">Stadt Steyr     </option>
+                <option value="403">Stadt Wels      </option>
+                <option value="404">Braunau         </option>
+                <option value="405">Eferding        </option>
+                <option value="406">Freistadt       </option>
+                <option value="407">Gmunden         </option>
+                <option value="408">Grieskirchen    </option>
+                <option value="409">Kirchdorf       </option>
+                <option value="410">Linz-Land       </option>
+                <option value="411">Perg            </option>
+                <option value="412">Ried            </option>
+                <option value="413">Rohrbach        </option>
+                <option value="414">Schärding       </option>
+                <option value="415">Steyr-Land      </option>
+                <option value="416">Urfahr-Umgebung </option>
+                <option value="417">Vöcklabruck     </option>
+                <option value="418">Wels-Land       </option>
+            </select>
+        </div>
+        <div id="BL-4" class="aligned BL">
+            <span class="title-2">Salzburg</span>
+            <select class="width-100 ui-entry-2 ui-input" multiple size="4">
+                <option value="501">Salzburg (Stadt)      </option>
+                <option value="502">Hallein               </option>
+                <option value="503">Salzburg-Umgebung     </option>
+                <option value="504">Sankt Johann im Pongau</option>
+                <option value="505">Tamsweg               </option>
+                <option value="506">Zell am See           </option>
+            </select>
+        </div>
+        <div id="BL-5" class="aligned BL">
+            <span class="title-2">Steiermark</span>
+            <select class="width-100 ui-entry-2 ui-input" multiple size="4">
+                <option value="601">Graz (Stadt)        </option>
+                <option value="603">Deutschlandsberg    </option>
+                <option value="606">Graz-Umgebung       </option>
+                <option value="610">Leibnitz            </option>
+                <option value="611">Leoben              </option>
+                <option value="612">Liezen              </option>
+                <option value="614">Murau               </option>
+                <option value="616">Voitsberg           </option>
+                <option value="617">Weiz                </option>
+                <option value="620">Murtal              </option>
+                <option value="621">Bruck-Mürzzuschlag  </option>
+                <option value="622">Hartberg-Fürstenfeld</option>
+                <option value="623">Südoststeiermark    </option>
+            </select>
+        </div>
+        <div id="BL-6" class="aligned BL">
+            <span class="title-2">Kärnten</span>
+            <select class="width-100 ui-entry-2 ui-input" multiple size="4">
+                <option value="201">Klagenfurt Stadt</option>
+                <option value="202">Villach Stadt</option>
+                <option value="203">Hermagor</option>
+                <option value="204">Klagenfurt Land</option>
+                <option value="205">Sankt Veit an der Glan</option>
+                <option value="206">Spittal an der Drau</option>
+                <option value="207">Villach Land</option>
+                <option value="208">Völkermarkt</option>
+                <option value="209">Wolfsberg </option>
+                <option value="210">Feldkirchen</option>
+            </select>
+        </div>
+        <div id="BL-7" class="aligned BL">
+            <span class="title-2">Tirol</span>
+            <select class="width-100 ui-entry-2 ui-input" multiple size="4">
+                <option value="701">Innsbruck-Stadt</option>
+                <option value="702">Imst</option>
+                <option value="703">Innsbruck-Land</option>
+                <option value="704">Kitzbühel</option>
+                <option value="705">Kufstein</option>
+                <option value="706">Landeck</option>
+                <option value="707">Lienz</option>
+                <option value="708">Reutte</option>
+                <option value="709">Schwaz</option>
+            </select>
+        </div>
+        <div id="BL-8" class="aligned BL">
+            <span class="title-2">Vorarlberg</span>
+            <select class="width-100 ui-entry-2 ui-input" multiple size="4">
+                <option value="801">Bludenz</option>
+                <option value="802">Bregenz</option>
+                <option value="803">Dornbirn</option>
+                <option value="804">Feldkirch</option>
+            </select>
+        </div>
+    </div>
+</div>
+<!-- Menu jquery-ui -->
+<ul id="menu" style="display:none">
+    <li><div id="open-bookmark-setting">
+        <span class="fa-ui-icon"><i class="fa-regular fa-bookmark"></i></span>
+        <span>Merkliste</span>
+        </div>
+    </li>
+    <li><div id="open-searchprofile-setting">
+        <span class="fa-ui-icon"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+        <span>Suchprofil</span>
+        </div>
+    </li>
+    <li><div id="oopen-cleardata-setting">
+        <span class="fa-ui-icon"><i class="fa-regular fa-trash-can"></i></span>
+        <span>Daten bereinigen</span>
+    </div>
+    </li>
+    <li><div id="sun-moon-switch">
+        <span style="display:none" class="sun-icon fa-ui-icon"><i class="fa-solid fa-sun"></i></span>
+        <span style="display:none" class="sun-icon">Nachtmodus ausschalten</span>
+        <span style="display:none" class="moon-icon fa-ui-icon"><i class="fa-solid fa-moon"></i></span>
+        <span style="display:none" class="moon-icon">Nachtmodus einschalten</span>
+        </div>
+    </li>
+    <div></div>
+    <li><div id="open-info">
+        <span class="fa-ui-icon"><i class="fa-solid fa-circle-info"></i></span>
+        <span>Info</span>
+        </div>
+    </li>
+    <li class="android-function" style="display:none;"><div id="close-android-app">
+        <span class="fa-ui-icon"><i class="fa-regular fa-circle-xmark"></i></span>
+        <span>Beenden</span>
+        </div>
+    </li>
+    <div style="height: fit-content;">
+        <li>
+            <div style="padding:5px; margin-top:10px;">
+                <img src="https://orf.at/mojo/1_4_1/storyserver//news/news/images/target_news-universal.svg" width="103" height="39" alt="ORF.at" title="">
+            </div>
+        </li>
+    </div>
+</ul>
+</body>
+</html>
